@@ -7,8 +7,21 @@ const router: Router = express.Router();
 
 router.get("/", gameController.getGames);
 
-router.post("/", 
+router.get("/:id",
+    validateRequest(itemSchemas.getGameById),
+    gameController.getGameById);
+
+router.post("/",
     validateRequest(itemSchemas.create),
-    gameController.createGame)
+    gameController.createGame);
+
+router.put("/:id",
+    validateRequest(itemSchemas.updateGame),
+    gameController.updateGame);
+
+router.delete("/:id",
+    validateRequest(itemSchemas.deleteGame),
+    gameController.deleteGame
+)
 
 export default router
