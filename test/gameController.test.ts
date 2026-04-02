@@ -107,8 +107,8 @@ describe('Controller Name', () => {
                 genre: "Shooting",
                 developedBy: "John",
                 size: "700MB",
-                platform: "Mobile",
-                modes: "single-player",
+                platform: ["Mobile", "PlayStation"],
+                modes: ["single-player", "multiplayer"],
                 rating: 9,
                 releaseDate: new Date(),
                 updatedAt: new Date()

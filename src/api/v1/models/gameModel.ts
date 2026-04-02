@@ -6,7 +6,7 @@ export interface gameModel {
     releaseDate: Date,
     updatedAt: Date,
     size: string,
-    modes: string,
-    platform: string,
+    modes: Array<string>,
+    platform: Array<string>,
     rating: number                  
 }

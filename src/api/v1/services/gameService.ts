@@ -25,8 +25,8 @@ export const createGame = async (game: {
     releaseDate: Date,
     updatedAt: Date,
     size: string,
-    modes: string,
-    platform: string,
+    modes: Array<string>,
+    platform: Array<string>,
     rating: number
 }): Promise<gameModel> => {
      

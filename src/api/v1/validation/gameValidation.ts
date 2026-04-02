@@ -24,12 +24,12 @@ export const itemSchemas = {
                 "any.required": '"size" is required',
                 "string.empty": '"size" cannot be empty.'
             }),
-            platform: Joi.string().required().valid("PC", "PlayStation", "X-Box", "Mobile").messages({
+            platform: Joi.array().required().items(Joi.string().valid("PC", "PlayStation", "X-Box", "Mobile")).messages({
                 "any.required": '"platform" is required',
                 "string.empty": '"platform" cannot be empty',
                 "any.only": '"platform" must be one of [PC, PlayStation, X-Box, Mobile]'
             }),
-            modes: Joi.string().optional().default("single-player").valid("single-player", "multi-player", "hybrid").messages({
+            modes: Joi.array().optional().default("single-player").items(Joi.string().valid("single-player", "multi-player", "hybrid")).messages({
                 "any.only": '"modes" must be one of [single-player, multi-player, hybrid]'
             }),
             rating: Joi.number().optional().default(5.0),

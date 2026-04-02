@@ -9,8 +9,8 @@ const mockGame: gameModel = {
     genre: "Shooting",
     developedBy: "John",
     size: "700MB",
-    modes: "single-player",
-    platform: "Mobile",
+    modes: ["single-player", "multiplayer"],
+    platform: ["Mobile", "PlayStation"],
     rating: 9,
     releaseDate: new Date(),
     updatedAt: new Date()
