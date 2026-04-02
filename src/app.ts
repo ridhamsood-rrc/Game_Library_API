@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import gameRoutes from "./api/v1/routes/gameRoutes"
+import setupSwagger from "../config/gameswaggerConfig";
 
 // Initialize the express application
 const app: Express = express();
@@ -21,5 +22,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/games/", gameRoutes)
+
+setupSwagger(app);
 
 export default app;

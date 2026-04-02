@@ -1,5 +1,183 @@
 import Joi from "joi";
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Game:
+ *       type: object
+ *       required:
+ *         - title
+ *         - genre
+ *         - size
+ *         - platform
+ *         - developedBy
+ *       properties:
+ *         id:
+ *           type: number
+ *           description: Unique identifier for the game
+ *           example: 1
+ *         title:
+ *           type: string
+ *           minLength: 5
+ *           maxLength: 30
+ *           description: Full name of the game
+ *           example: "Call Of Duty"
+ *         genre:
+ *           type: string
+ *           enum: [Shooting, Open-World, Simulation, Sports]
+ *           description: The type of game
+ *           example: "Shooting"
+ *         modes:
+ *           type: array
+ *           default: ["single-player"]
+ *           enum: [single-player, multiplayer, hybrid]
+ *           description: The modes of the game
+ *           example: ["single-player", "multiplayer"]
+ *         size:
+ *           type: string
+ *           description: The total size of the game
+ *           example: "500MB"
+ *         platform:
+ *           type: array
+ *           enum: [PC, Playstation, X-Box, Mobile]
+ *           description: Platform's the game is available on
+ *           example: ["PC", "PlayStation"]
+ *         rating:
+ *           type: number
+ *           default: 5
+ *           description: The rating of the game
+ *           example: 9
+ *         developedBy:
+ *           type: string
+ *           description: The creator of the game
+ *           example: "Infinity Ward"
+ *         releaseDate:
+ *           type: string
+ *           format: date-time
+ *           description: When the game information was released
+ *           example: "2024-01-15T10:30:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: When the game information was last updated
+ *           example: "2024-01-20T14:45:00Z"
+ *     GetGameById:
+ *       type: object
+ *       properties:
+ *         title:
+ *           type: string
+ *           minLength: 5
+ *           maxLength: 30
+ *           description: Full name of the game
+ *           example: "Call Of Duty"
+ *         genre:
+ *           type: string
+ *           enum: [Shooting, Open-World, Simulation, Sports]
+ *           description: The type of game
+ *           example: "Shooting"
+ *         modes:
+ *           type: array
+ *           default: ["single-player"]
+ *           enum: [single-player, multiplayer, hybrid]
+ *           description: The modes of the game
+ *           example: ["single-player", "multiplayer"]
+ *         size:
+ *           type: string
+ *           description: The total size of the game
+ *           example: "500MB"
+ *         platform:
+ *           type: array
+ *           enum: [PC, Playstation, X-Box, Mobile]
+ *           description: Platform's the game is available on
+ *           example: ["PC", "PlayStation"]
+ *         rating:
+ *           type: number
+ *           default: 5
+ *           description: The rating of the game
+ *           example: 9
+ *         developedBy:
+ *           type: string
+ *           description: The creator of the game
+ *           example: "Infinity Ward"
+ *         releaseDate:
+ *           type: string
+ *           format: date-time
+ *           description: When the game information was released
+ *           example: "2024-01-15T10:30:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: When the game information was last updated
+ *           example: "2024-01-20T14:45:00Z"
+ *     UpdateGame:
+ *       type: object
+ *       description: Fields to update for a game (at least one must be provided)
+ *       minProperties: 1
+ *       properties:
+ *         title:
+ *           type: string
+ *           minLength: 5
+ *           maxLength: 30
+ *           description: Full name of the game
+ *           example: "Call Of Duty"
+ *         genre:
+ *           type: string
+ *           enum: [Shooting, Open-World, Simulation, Sports]
+ *           description: The type of game
+ *           example: "Shooting"
+ *         modes:
+ *           type: array
+ *           default: ["single-player"]
+ *           enum: [single-player, multiplayer, hybrid]
+ *           description: The modes of the game
+ *           example: ["single-player", "multiplayer"]
+ *         size:
+ *           type: string
+ *           description: The total size of the game
+ *           example: "500MB"
+ *         platform:
+ *           type: array
+ *           enum: [PC, Playstation, X-Box, Mobile]
+ *           description: Platform's the game is available on
+ *           example: ["PC", "PlayStation"]
+ *         rating:
+ *           type: number
+ *           default: 5
+ *           description: The rating of the game
+ *           example: 9
+ *         developedBy:
+ *           type: string
+ *           description: The creator of the game
+ *           example: "Infinity Ward"
+ *     Error:
+ *       type: object
+ *       required:
+ *         - error
+ *         - message
+ *       properties:
+ *         error:
+ *           type: string
+ *           description: Error type or code
+ *           example: "VALIDATION_ERROR"
+ *         message:
+ *           type: string
+ *           description: Human-readable error message
+ *           example: "The title field is required"
+ *         details:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               field:
+ *                 type: string
+ *                 example: "title"
+ *               issue:
+ *                 type: string
+ *                 example: "must be a valid title"
+ */
+
+
 // Item operation schemas
 export const itemSchemas = {
     // POST /games - create a new game
@@ -29,7 +207,7 @@ export const itemSchemas = {
                 "string.empty": '"platform" cannot be empty',
                 "any.only": '"platform" must be one of [PC, PlayStation, X-Box, Mobile]'
             }),
-            modes: Joi.array().optional().default("single-player").items(Joi.string().valid("single-player", "multi-player", "hybrid")).messages({
+            modes: Joi.array().optional().default(["single-player"]).items(Joi.string().valid("single-player", "multi-player", "hybrid")).messages({
                 "any.only": '"modes" must be one of [single-player, multi-player, hybrid]'
             }),
             rating: Joi.number().optional().default(5.0),
