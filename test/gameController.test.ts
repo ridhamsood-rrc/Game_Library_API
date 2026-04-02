@@ -36,7 +36,7 @@ describe('Controller Name', () => {
 
             // Arrange
             mockReq.body = { 
-                "name": "Critical Ops",
+                "title": "Critical Ops",
                 "genre": "Shooting",
                 "developedBy": "John",
                 "size": "700MB",
@@ -98,18 +98,19 @@ describe('Controller Name', () => {
                     id: "1" 
                 },
                 body: { 
-                    name: "New game", 
+                    title: "New game", 
                 }
             };
             const mockGame: gameModel = {
                 id: 1,
-                name: "old game",
+                title: "old game",
                 genre: "Shooting",
                 developedBy: "John",
                 size: "700MB",
                 platform: "Mobile",
                 modes: "single-player",
-                createdAt: new Date(),
+                rating: 9,
+                releaseDate: new Date(),
                 updatedAt: new Date()
             };
 

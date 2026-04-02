@@ -43,7 +43,7 @@ describe("Game Routes", () => {
             const res: Response = await request(app)
                 .post("/api/v1/games")
                 .send({
-                    "name": "Critical Ops",
+                    "title": "Critical Ops",
                     "genre": "Shooting",
                     "developedBy": "John",
                     "size": "700MB",

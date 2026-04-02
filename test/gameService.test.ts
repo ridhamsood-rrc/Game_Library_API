@@ -5,13 +5,14 @@ import * as gameService from "../src/api/v1/services/gameService";
 jest.mock("../src/api/v1/repository/firestoreRepository");
 
 const mockGame: gameModel = {
-    name: "Critical Ops",
+    title: "Critical Ops",
     genre: "Shooting",
     developedBy: "John",
     size: "700MB",
     modes: "single-player",
     platform: "Mobile",
-    createdAt: new Date(),
+    rating: 9,
+    releaseDate: new Date(),
     updatedAt: new Date()
 };
 
@@ -59,7 +60,7 @@ describe("getGames service", () => {
     it("should update game information", async () => {
 
         // Arrange
-        const updatedData = { name: "Updated Game" };
+        const updatedData = { title: "Updated Game" };
         const updatedGame = { ...mockGame, ...updatedData };
 
         (gameRepository.updateGame as jest.Mock).mockResolvedValue(updatedGame);
@@ -69,7 +70,7 @@ describe("getGames service", () => {
 
         // Assert
         expect(gameRepository.updateGame).toHaveBeenCalledWith("1", updatedData);
-        expect(result.name).toBe("Updated Game");
+        expect(result.title).toBe("Updated Game");
     });
 
     it("should delete game information", async () => {
