@@ -19,14 +19,15 @@ export const getGameById = async (
 
 // Defining service to create games and add to the database
 export const createGame = async (game: {
-    name: string,
+    title: string,
     genre: string,
     developedBy: string,
-    createdAt: Date,
+    releaseDate: Date,
     updatedAt: Date,
     size: string,
     modes: string,
-    platform: string
+    platform: string,
+    rating: number
 }): Promise<gameModel> => {
      
     const newGame: gameModel = await gameRepository.createGame(game);

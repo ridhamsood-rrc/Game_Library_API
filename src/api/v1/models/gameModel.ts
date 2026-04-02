@@ -1,11 +1,12 @@
 export interface gameModel {
     id?: number,
-    name: string,
+    title: string,
     genre: string,
     developedBy: string,
-    createdAt: Date,
+    releaseDate: Date,
     updatedAt: Date,
     size: string,
     modes: string,
-    platform: string                            
+    platform: string,
+    rating: number                  
 }

@@ -9,16 +9,23 @@ export const getGames = async (): Promise<gameModel[]> => {
     return snapshot.docs.map(doc => {
         const data: DocumentData = doc.data();
 
+        if(!data.updatedAt){
+            data.updatedAt = "Not updated yet"
+        } else {
+            data.updatedAt = data.updatedAt.toDate().toISOString()
+        }
+
         return {
             id: Number(doc.id),
-            name: data.name,
+            title: data.title,
             genre: data.genre,
-            developedBy: data.developedBy,
-            createdAt: data.createdAt.toDate().toISOString(),
-            updatedAt: data.createdAt.toDate().toISOString(),
             size: data.size,
             modes: data.modes,
-            platform: data.platform
+            platform: data.platform,
+            rating: data.rating,
+            developedBy: data.developedBy,
+            releaseDate: data.releaseDate.toDate().toISOString(),
+            updatedAt: data.updatedAt,
         };
     });
 };
@@ -43,13 +50,14 @@ export const getGameById = async (
 
     return {
         id: Number(snapshot.id),
-        name: data.name,
+        title: data.title,
         genre: data.genre,
-        developedBy: data.developedBy,
         size: data.size,
         modes: data.modes,
+        rating: data.rating,
         platform: data.platform,
-        createdAt: data.createdAt.toDate().toISOString(),
+        developedBy: data.developedBy,
+        releaseDate: data.releaseDate.toDate().toISOString(),
         updatedAt: data.updatedAt
     }
 };
@@ -83,20 +91,21 @@ export const createGame = async (
         const gameRef: DocumentReference = db.collection("games").doc(String(formattedId));
 
         transaction.set(gameRef, {
-            name: game.name,
+            title: game.title,
             genre: game.genre,
             developedBy: game.developedBy,
-            createdAt: createdAt,
+            releaseDate: createdAt,
             size: game.size,
             modes: game.modes,
-            platform: game.platform
+            platform: game.platform,
+            rating: game.rating
         });
     });
 
     return {
         id: formattedId,
         ...game,
-        createdAt: createdAt
+        releaseDate: createdAt
     };
 };
 
@@ -106,13 +115,14 @@ export const serializeGame = (doc: FirebaseFirestore.DocumentSnapshot): gameMode
 
     return {
         id: Number(doc.id),
-        name: data.name,
+        title: data.title,
         genre: data.genre,
-        developedBy: data.developedBy,
         size: data.size,
         modes: data.modes,
         platform: data.platform,
-        createdAt: data.createdAt.toDate().toISOString(),
+        rating: data.rating,
+        developedBy: data.developedBy,
+        releaseDate: data.releaseDate.toDate().toISOString(),
         updatedAt: new Date()
     };
 };

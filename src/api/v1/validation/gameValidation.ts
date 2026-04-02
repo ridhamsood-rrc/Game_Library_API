@@ -5,11 +5,11 @@ export const itemSchemas = {
     // POST /games - create a new game
     create: {
         body: Joi.object({
-            name: Joi.string().min(5).max(30).required().messages({
-                "any.required": '"name" is required',
-                "string.empty": '"name" cannot be empty',
-                "string.min": '"name" must be at least 5 characters long.',
-                "string.max": '"name" must be less than 30 characters.'
+            title: Joi.string().min(5).max(30).required().messages({
+                "any.required": '"title" is required',
+                "string.empty": '"title" cannot be empty',
+                "string.min": '"title" must be at least 5 characters long.',
+                "string.max": '"title" must be less than 30 characters.'
             }),
             genre: Joi.string().required().valid("Shooting", "Open-World", "Sports", "Simulation").messages({
                 "number.required": '"capacity" is required.',
@@ -32,7 +32,8 @@ export const itemSchemas = {
             modes: Joi.string().optional().default("single-player").valid("single-player", "multi-player", "hybrid").messages({
                 "any.only": '"modes" must be one of [single-player, multi-player, hybrid]'
             }),
-            createdAt: Joi.date().optional().default(new Date()),
+            rating: Joi.number().optional().default(5.0),
+            releaseDate: Joi.date().optional().default(new Date()),
         })
     },
     // GET /games/:id - Get game by game_id
@@ -54,9 +55,9 @@ export const itemSchemas = {
             })
         }),
         body: Joi.object({
-            name: Joi.string().min(5).max(30).messages({
-                "string.min": '"name" must be at least 5 characters long.',
-                "string.max": '"name" must be less than 30 characters.'
+            title: Joi.string().min(5).max(30).messages({
+                "string.min": '"title" must be at least 5 characters long.',
+                "string.max": '"title" must be less than 30 characters.'
             }),
             genre: Joi.string().valid("Shooting", "Open-World", "Sports", "Simulation").messages({
                 "any.only": '"genre" must be one of [Shooting, Open-World, Sports, Simulation]'
