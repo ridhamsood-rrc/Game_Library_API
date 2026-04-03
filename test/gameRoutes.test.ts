@@ -47,7 +47,7 @@ describe("Game Routes", () => {
                     "genre": "Shooting",
                     "developedBy": "John",
                     "size": "700MB",
-                    "platform": "Mobile"
+                    "platform": ["Mobile"]
                 });
 
             // Assert

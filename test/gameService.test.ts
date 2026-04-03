@@ -12,7 +12,7 @@ const mockGame: gameModel = {
     modes: ["single-player", "multiplayer"],
     platform: ["Mobile", "PlayStation"],
     rating: 9,
-    releaseDate: new Date(),
+    releaseDate: ("2025-04-13"),
     updatedAt: new Date()
 };
 

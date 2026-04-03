@@ -110,7 +110,7 @@ describe('Controller Name', () => {
                 platform: ["Mobile", "PlayStation"],
                 modes: ["single-player", "multiplayer"],
                 rating: 9,
-                releaseDate: new Date(),
+                releaseDate: "2026-03-13",
                 updatedAt: new Date()
             };
 

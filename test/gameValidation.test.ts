@@ -24,8 +24,8 @@ describe("validateRequest Middleware", () => {
     it("should pass for valid body input", () => {
         const testSchemas = {
             body: Joi.object({
-                name: Joi.string().min(5).max(30).required(),
-                genre: Joi.string().required().valid("Shooting", "Open-World", "Sports", "Simulation"),
+                name: Joi.string().min(5).max(50).required(),
+                genre: Joi.string().required().valid("Shooting", "Open-World", "Sports", "Simulation", "Action"),
                 developedBy: Joi.string().required(),
                 size: Joi.string().required(),
                 platform: Joi.string().required().valid("PC", "PlayStation", "X-Box", "Mobile"),
@@ -50,8 +50,8 @@ describe("validateRequest Middleware", () => {
     it("should fail for invalid name", () => {
         const testSchemas = {
             body: Joi.object({
-                name: Joi.string().min(5).max(30).required(),
-                genre: Joi.string().required().valid("Shooting", "Open-World", "Sports", "Simulation"),
+                name: Joi.string().min(5).max(50).required(),
+                genre: Joi.string().required().valid("Shooting", "Open-World", "Sports", "Simulation", "Action"),
                 developedBy: Joi.string().required(),
                 size: Joi.string().required(),
                 platform: Joi.string().required().valid("PC", "PlayStation", "X-Box", "Mobile"),
@@ -78,8 +78,8 @@ describe("validateRequest Middleware", () => {
     it("should fail for invalid genre", () => {
         const testSchemas = {
             body: Joi.object({
-                name: Joi.string().min(5).max(30).required(),
-                genre: Joi.string().required().valid("Shooting", "Open-World", "Sports", "Simulation"),
+                name: Joi.string().min(5).max(50).required(),
+                genre: Joi.string().required().valid("Shooting", "Open-World", "Sports", "Simulation", "Action"),
                 developedBy: Joi.string().required(),
                 size: Joi.string().required(),
                 platform: Joi.string().required().valid("PC", "PlayStation", "X-Box", "Mobile"),
@@ -98,7 +98,7 @@ describe("validateRequest Middleware", () => {
 
         expect(mockRes.status).toHaveBeenCalledWith(400);
         expect(mockRes.json).toHaveBeenCalledWith({
-            message: 'Validation error: "genre" must be one of [Shooting, Open-World, Sports, Simulation]',
+            message: 'Validation error: "genre" must be one of [Shooting, Open-World, Sports, Simulation, Action]',
         });
         expect(mockNext).not.toHaveBeenCalled();
     });
@@ -106,8 +106,8 @@ describe("validateRequest Middleware", () => {
     it("should fail for invalid size", () => {
         const testSchemas = {
             body: Joi.object({
-                name: Joi.string().min(5).max(30).required(),
-                genre: Joi.string().required().valid("Shooting", "Open-World", "Sports", "Simulation"),
+                name: Joi.string().min(5).max(50).required(),
+                genre: Joi.string().required().valid("Shooting", "Open-World", "Sports", "Simulation", "Action"),
                 developedBy: Joi.string().required(),
                 size: Joi.string().required(),
                 platform: Joi.string().required().valid("PC", "PlayStation", "X-Box", "Mobile"),
