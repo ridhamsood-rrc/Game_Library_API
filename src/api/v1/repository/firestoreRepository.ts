@@ -10,10 +10,14 @@ export const getGames = async (): Promise<gameModel[]> => {
         const data: DocumentData = doc.data();
 
         if(!data.updatedAt){
-            data.updatedAt = "Not updated yet"
+            data.updatedAt = "Information not updated yet"
         } else {
             data.updatedAt = data.updatedAt.toDate().toISOString()
         }
+
+        const timestamp = data.releaseDate;
+        const date = new Date(timestamp._seconds * 1000);
+        const formattedDate = date.toISOString().split("T")[0];
 
         return {
             id: Number(doc.id),
@@ -24,7 +28,7 @@ export const getGames = async (): Promise<gameModel[]> => {
             platform: data.platform,
             rating: data.rating,
             developedBy: data.developedBy,
-            releaseDate: data.releaseDate.toDate().toISOString(),
+            releaseDate: formattedDate,
             updatedAt: data.updatedAt,
         };
     });
@@ -43,10 +47,14 @@ export const getGameById = async (
     const data: DocumentData = snapshot.data()!;
 
     if(!data.updatedAt){
-        data.updatedAt = "Not updated yet"
+        data.updatedAt = "Information not updated yet"
     } else {
         data.updatedAt = data.updatedAt.toDate().toISOString()
     }
+
+    const timestamp = data.releaseDate;
+    const date = new Date(timestamp._seconds * 1000);
+    const formattedDate = date.toISOString().split("T")[0];
 
     return {
         id: Number(snapshot.id),
@@ -57,7 +65,7 @@ export const getGameById = async (
         rating: data.rating,
         platform: data.platform,
         developedBy: data.developedBy,
-        releaseDate: data.releaseDate.toDate().toISOString(),
+        releaseDate: formattedDate,
         updatedAt: data.updatedAt
     }
 };
@@ -68,8 +76,6 @@ export const createGame = async (
 ): Promise<gameModel> => {
 
     const counterRef: DocumentReference = db.collection("counters").doc("numbers");
-
-    const createdAt: Date = new Date;
 
     let formattedId: number = 0;
 
@@ -94,7 +100,7 @@ export const createGame = async (
             title: game.title,
             genre: game.genre,
             developedBy: game.developedBy,
-            releaseDate: createdAt,
+            releaseDate: game.releaseDate,
             size: game.size,
             modes: game.modes,
             platform: game.platform,
@@ -104,8 +110,7 @@ export const createGame = async (
 
     return {
         id: formattedId,
-        ...game,
-        releaseDate: createdAt
+        ...game
     };
 };
 
@@ -122,7 +127,7 @@ export const serializeGame = (doc: FirebaseFirestore.DocumentSnapshot): gameMode
         platform: data.platform,
         rating: data.rating,
         developedBy: data.developedBy,
-        releaseDate: data.releaseDate.toDate().toISOString(),
+        releaseDate: data.releaseDate,
         updatedAt: new Date()
     };
 };

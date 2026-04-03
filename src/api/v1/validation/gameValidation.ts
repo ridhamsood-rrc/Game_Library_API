@@ -20,12 +20,12 @@ import Joi from "joi";
  *         title:
  *           type: string
  *           minLength: 5
- *           maxLength: 30
+ *           maxLength: 50
  *           description: Full name of the game
  *           example: "Call Of Duty"
  *         genre:
  *           type: string
- *           enum: [Shooting, Open-World, Simulation, Sports]
+ *           enum: [Shooting, Open-World, Simulation, Sports, Action]
  *           description: The type of game
  *           example: "Shooting"
  *         modes:
@@ -68,12 +68,12 @@ import Joi from "joi";
  *         title:
  *           type: string
  *           minLength: 5
- *           maxLength: 30
+ *           maxLength: 50
  *           description: Full name of the game
  *           example: "Call Of Duty"
  *         genre:
  *           type: string
- *           enum: [Shooting, Open-World, Simulation, Sports]
+ *           enum: [Shooting, Open-World, Simulation, Sports, Action]
  *           description: The type of game
  *           example: "Shooting"
  *         modes:
@@ -118,12 +118,12 @@ import Joi from "joi";
  *         title:
  *           type: string
  *           minLength: 5
- *           maxLength: 30
+ *           maxLength: 50
  *           description: Full name of the game
  *           example: "Call Of Duty"
  *         genre:
  *           type: string
- *           enum: [Shooting, Open-World, Simulation, Sports]
+ *           enum: [Shooting, Open-World, Simulation, Sports, Action]
  *           description: The type of game
  *           example: "Shooting"
  *         modes:
@@ -183,16 +183,16 @@ export const itemSchemas = {
     // POST /games - create a new game
     create: {
         body: Joi.object({
-            title: Joi.string().min(5).max(30).required().messages({
+            title: Joi.string().min(5).max(50).required().messages({
                 "any.required": '"title" is required',
                 "string.empty": '"title" cannot be empty',
                 "string.min": '"title" must be at least 5 characters long.',
-                "string.max": '"title" must be less than 30 characters.'
+                "string.max": '"title" must be less than 50 characters.'
             }),
-            genre: Joi.string().required().valid("Shooting", "Open-World", "Sports", "Simulation").messages({
+            genre: Joi.string().required().valid("Shooting", "Open-World", "Sports", "Simulation", "Action").messages({
                 "number.required": '"capacity" is required.',
                 "string.empty": '"genre" cannot be empty',
-                "any.only": '"genre" must be one of [Shooting, Open-World, Sports, Simulation]'
+                "any.only": '"genre" must be one of [Shooting, Open-World, Sports, Simulation, Action]'
             }),
             developedBy: Joi.string().required().messages({
                 "any.required": '"developedBy" is required',
@@ -233,12 +233,12 @@ export const itemSchemas = {
             })
         }),
         body: Joi.object({
-            title: Joi.string().min(5).max(30).messages({
+            title: Joi.string().min(5).max(50).messages({
                 "string.min": '"title" must be at least 5 characters long.',
-                "string.max": '"title" must be less than 30 characters.'
+                "string.max": '"title" must be less than 50 characters.'
             }),
-            genre: Joi.string().valid("Shooting", "Open-World", "Sports", "Simulation").messages({
-                "any.only": '"genre" must be one of [Shooting, Open-World, Sports, Simulation]'
+            genre: Joi.string().valid("Shooting", "Open-World", "Sports", "Simulation", "Action").messages({
+                "any.only": '"genre" must be one of [Shooting, Open-World, Sports, Simulation, Action]'
             }),
             platform: Joi.string().valid("PC", "PlayStation", "X-Box", "Mobile").messages({
                 "any.only": '"platform" must be one of [PC, PlayStation, X-Box, Mobile]'

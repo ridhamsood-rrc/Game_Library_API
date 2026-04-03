@@ -22,7 +22,7 @@ export const createGame = async (game: {
     title: string,
     genre: string,
     developedBy: string,
-    releaseDate: Date,
+    releaseDate: string,
     updatedAt: Date,
     size: string,
     modes: Array<string>,

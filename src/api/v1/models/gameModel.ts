@@ -7,6 +7,6 @@ export interface gameModel {
     platform: Array<string>,
     rating: number,
     developedBy: string,
-    releaseDate: Date,
+    releaseDate: string,
     updatedAt: Date,                  
 }
