@@ -38,7 +38,7 @@
           "title": {
             "type": "string",
             "minLength": 5,
-            "maxLength": 30,
+            "maxLength": 50,
             "description": "Full name of the game",
             "example": "Call Of Duty"
           },
@@ -48,7 +48,8 @@
               "Shooting",
               "Open-World",
               "Simulation",
-              "Sports"
+              "Sports",
+              "Action"
             ],
             "description": "The type of game",
             "example": "Shooting"
@@ -119,7 +120,7 @@
           "title": {
             "type": "string",
             "minLength": 5,
-            "maxLength": 30,
+            "maxLength": 50,
             "description": "Full name of the game",
             "example": "Call Of Duty"
           },
@@ -129,7 +130,8 @@
               "Shooting",
               "Open-World",
               "Simulation",
-              "Sports"
+              "Sports",
+              "Action"
             ],
             "description": "The type of game",
             "example": "Shooting"
@@ -202,7 +204,7 @@
           "title": {
             "type": "string",
             "minLength": 5,
-            "maxLength": 30,
+            "maxLength": 50,
             "description": "Full name of the game",
             "example": "Call Of Duty"
           },
@@ -212,7 +214,8 @@
               "Shooting",
               "Open-World",
               "Simulation",
-              "Sports"
+              "Sports",
+              "Action"
             ],
             "description": "The type of game",
             "example": "Shooting"
