@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+import userRoutes from "../src/api/v1/routes/userRoutes";
+
 // Initialize the express application
 const app: Express = express();
 
@@ -17,5 +19,7 @@ app.use(express.json())
 app.get("/", (req, res) => {
     res.send("Response to request");
 });
+
+app.use("/api/v1/", userRoutes);
 
 export default app;
