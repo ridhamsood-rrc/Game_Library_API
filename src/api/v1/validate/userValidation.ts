@@ -22,3 +22,35 @@ export const createUserSchema = Joi.object({
     }),
     createdAt: Joi.date().optional().default(new Date())
   });
+
+export const updateUserSchema = {
+    params: Joi.object({
+        id: Joi.string().required().messages({
+            "any.required": "Event id is required",
+            "string.empty": "Event id cannot be empty"
+        })
+    }),
+
+    body: Joi.object({
+        username: Joi.string().min(3).messages({
+            "string.empty": '"username" cannot be empty',
+            "string.min": '"username" must be at least 3 characters long.',
+            "any.required": '"username" is required'
+        }),
+        password: Joi.string().min(5).messages({
+            "string.empty": '"password" cannot be empty',
+            "string.min": '"password" must be at least 3 characters long.',
+            "any.required": '"password" is required'
+        }),
+        DOB: Joi.date().less("now").messages({
+            "date.base": '"date" must be valid',
+            "date.greater": '"date" must be lower than "now"'
+        }),
+        platform: Joi.array().items(Joi.string().valid("PC", "PlayStation", "Mobile", "X-Box")).messages({
+            "string.empty": '"platform" cannot be empty.',
+            "any.required": '"platform" is required.',
+            "any.only": '"platform" must be one of [PC, PlayStation, X-Box, Mobile]'
+        })
+    }
+    ).min(1)
+};
