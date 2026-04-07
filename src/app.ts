@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import gameRoutes from "./api/v1/routes/gameRoutes"
-import setupSwagger from "../config/gameswaggerConfig";
+import setupSwagger from "../config/gameSwaggerConfig";
 
 // Initialize the express application
 const app: Express = express();
