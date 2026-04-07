@@ -3,6 +3,6 @@ export interface userModel {
     username: string;
     password: string;
     DOB: string;
-    platform: string;
+    platform: Array<string>;
     createdAt: string;
 }
