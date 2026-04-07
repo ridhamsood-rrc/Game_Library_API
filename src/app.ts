@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+import setupSwagger from "../config/swagger";
 import userRoutes from "../src/api/v1/routes/userRoutes";
 
 // Initialize the express application
@@ -21,5 +22,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/users", userRoutes);
+
+setupSwagger(app);
 
 export default app;
