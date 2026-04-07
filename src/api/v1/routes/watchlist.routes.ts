@@ -24,19 +24,67 @@ const router = Router();
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Watchlist:
+ *       type: object
+ *       properties:
+ *         watchlistId:
+ *           type: string
+ *           example: watchlist00001
+ *         userId:
+ *           type: string
+ *           example: user1
+ *         gameId:
+ *           type: string
+ *           example: game1
+ *         status:
+ *           type: string
+ *           enum: [wishlist, playing, completed]
+ *           example: wishlist
+ *         addedAt:
+ *           type: string
+ *           example: 2026-04-07
+ *         updatedAt:
+ *           type: string
+ *           example: 2026-04-07
+ */
+
+/**
+ * @swagger
  * /api/v1/watchlist:
  *   post:
  *     summary: Add a game to watchlist
  *     tags: [Watchlist]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *               - gameId
+ *               - status
+ *             properties:
+ *               userId:
+ *                 type: string
+ *               gameId:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *                 enum: [wishlist, playing, completed]
  *     responses:
  *       201:
- *         description: Created
+ *         description: Watchlist item created successfully
+ *       400:
+ *         description: Invalid input
  *   get:
  *     summary: Get all watchlist items
  *     tags: [Watchlist]
  *     responses:
  *       200:
- *         description: Success
+ *         description: Successfully retrieved watchlist items
  */
 
 /**
@@ -45,9 +93,18 @@ const router = Router();
  *   get:
  *     summary: Get watchlist by user ID
  *     tags: [Watchlist]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the user
  *     responses:
  *       200:
- *         description: Success
+ *         description: Successfully retrieved user watchlist
+ *       404:
+ *         description: No watchlist found
  */
 
 /**
@@ -56,21 +113,58 @@ const router = Router();
  *   get:
  *     summary: Get watchlist item by ID
  *     tags: [Watchlist]
+ *     parameters:
+ *       - in: path
+ *         name: watchlistId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Watchlist item ID
  *     responses:
  *       200:
- *         description: Success
+ *         description: Successfully retrieved watchlist item
+ *       404:
+ *         description: Watchlist item not found
  *   put:
  *     summary: Update watchlist item
  *     tags: [Watchlist]
+ *     parameters:
+ *       - in: path
+ *         name: watchlistId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 enum: [wishlist, playing, completed]
  *     responses:
  *       200:
- *         description: Updated
+ *         description: Watchlist item updated successfully
+ *       400:
+ *         description: Invalid input
+ *       404:
+ *         description: Watchlist item not found
  *   delete:
  *     summary: Delete watchlist item
  *     tags: [Watchlist]
+ *     parameters:
+ *       - in: path
+ *         name: watchlistId
+ *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: Deleted
+ *         description: Watchlist item deleted successfully
+ *       404:
+ *         description: Watchlist item not found
  */
 
 router.get("/", getAllWatchlist);
