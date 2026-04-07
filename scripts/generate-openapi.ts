@@ -5,6 +5,6 @@ import { generateSwaggerSpec } from "../config/swaggerConfig";
 const specs = generateSwaggerSpec();
 
 // Write specs to a JSON file
-fs.writeFileSync("./openapi.json", JSON.stringify(specs, null, 2));
+fs.writeFileSync("./user_openapi.json", JSON.stringify(specs, null, 2));
 
 console.log("OpenAPI specification generated successfully!");

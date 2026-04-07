@@ -11,7 +11,7 @@
     "test:watch": "jest --watch",
     "build": "tsc",
     "start": "ts-node src/server.ts",
-    "generate-docs": "ts-node scripts/generate-openapi.ts && npx @redocly/cli build-docs openapi.json --output docs/index.html"
+    "generate-docs": "ts-node scripts/generate-openapi.ts && npx @redocly/cli build-docs user_openapi.json --output docs/user_index.html"
   },
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
-    "@types/node": "^25.5.0",
+    "@types/node": "^25.5.2",
     "@types/supertest": "^7.2.0",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
