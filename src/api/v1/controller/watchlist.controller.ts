@@ -67,7 +67,7 @@ export const deleteWatchlist = async (
 ): Promise<void> => {
     try {
         const userId = res.locals.user.uid;
-        const { id } = req.params;
+        const id = req.params.id as string;
 
         await watchlistService.deleteWatchlist(id, userId);
 
