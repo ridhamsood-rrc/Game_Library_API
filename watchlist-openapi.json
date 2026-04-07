@@ -1,0 +1,304 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "User watchlist API Documentation",
+    "version": "1.0.0",
+    "description": "This is the API documentation for the User watchlist application."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Watchlist": {
+        "type": "object",
+        "properties": {
+          "watchlistId": {
+            "type": "string",
+            "example": "watchlist00001"
+          },
+          "userId": {
+            "type": "string",
+            "example": "user1"
+          },
+          "gameId": {
+            "type": "string",
+            "example": "game1"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "wishlist",
+              "playing",
+              "completed"
+            ],
+            "example": "wishlist"
+          },
+          "addedAt": {
+            "type": "string",
+            "example": "2026-04-07"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2026-04-07"
+          }
+        }
+      },
+      "CreateWatchlistInput": {
+        "type": "object",
+        "required": [
+          "userId",
+          "gameId",
+          "status"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "example": "user1"
+          },
+          "gameId": {
+            "type": "string",
+            "example": "game1"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "wishlist",
+              "playing",
+              "completed"
+            ],
+            "example": "wishlist"
+          }
+        }
+      },
+      "UpdateWatchlistInput": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "example": "user1"
+          },
+          "gameId": {
+            "type": "string",
+            "example": "game1"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "wishlist",
+              "playing",
+              "completed"
+            ],
+            "example": "playing"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/api/v1/watchlist": {
+      "post": {
+        "summary": "Add a game to watchlist",
+        "tags": [
+          "Watchlist"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "userId",
+                  "gameId",
+                  "status"
+                ],
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  },
+                  "gameId": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "wishlist",
+                      "playing",
+                      "completed"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Watchlist item created successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all watchlist items",
+        "tags": [
+          "Watchlist"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved watchlist items"
+          }
+        }
+      }
+    },
+    "/api/v1/watchlist/user/{userId}": {
+      "get": {
+        "summary": "Get watchlist by user ID",
+        "tags": [
+          "Watchlist"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved user watchlist"
+          },
+          "404": {
+            "description": "No watchlist found"
+          }
+        }
+      }
+    },
+    "/api/v1/watchlist/{watchlistId}": {
+      "get": {
+        "summary": "Get watchlist item by ID",
+        "tags": [
+          "Watchlist"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "watchlistId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Watchlist item ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved watchlist item"
+          },
+          "404": {
+            "description": "Watchlist item not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update watchlist item",
+        "tags": [
+          "Watchlist"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "watchlistId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "wishlist",
+                      "playing",
+                      "completed"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Watchlist item updated successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Watchlist item not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete watchlist item",
+        "tags": [
+          "Watchlist"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "watchlistId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Watchlist item deleted successfully"
+          },
+          "404": {
+            "description": "Watchlist item not found"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Watchlist",
+      "description": "Watchlist management endpoints"
+    }
+  ]
+}
