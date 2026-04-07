@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "target": "ES6",
+        "types": ["jest"],
         "module": "commonjs",
         "strict": true,
         "esModuleInterop": true,
