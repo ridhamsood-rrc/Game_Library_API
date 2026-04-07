@@ -1,5 +1,42 @@
 import Joi from "joi";
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     CreateWatchlistInput:
+ *       type: object
+ *       required:
+ *         - userId
+ *         - gameId
+ *         - status
+ *       properties:
+ *         userId:
+ *           type: string
+ *           example: user1
+ *         gameId:
+ *           type: string
+ *           example: game1
+ *         status:
+ *           type: string
+ *           enum: [wishlist, playing, completed]
+ *           example: wishlist
+ *
+ *     UpdateWatchlistInput:
+ *       type: object
+ *       properties:
+ *         userId:
+ *           type: string
+ *           example: user1
+ *         gameId:
+ *           type: string
+ *           example: game1
+ *         status:
+ *           type: string
+ *           enum: [wishlist, playing, completed]
+ *           example: playing
+ */
+
 export const createWatchlistSchema = Joi.object({
     userId: Joi.string().trim().required().messages({
         "any.required": "userId is required",
