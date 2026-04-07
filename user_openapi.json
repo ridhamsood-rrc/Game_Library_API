@@ -1,0 +1,457 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "User Management API Documentation",
+    "version": "1.0.0",
+    "description": "This is the API documentation for the User Management application."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "summary": "Get all users information",
+        "tags": [
+          "Users"
+        ],
+        "description": "Retrieve a list of users information",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "string",
+                        "example": "user00001"
+                      },
+                      "username": {
+                        "type": "string",
+                        "example": "Prachi"
+                      },
+                      "password": {
+                        "type": "string",
+                        "example": "Prachi13"
+                      },
+                      "DOB": {
+                        "type": "string",
+                        "example": "2012-05-03"
+                      },
+                      "platform": {
+                        "type": "array",
+                        "example": [
+                          "PC",
+                          "Mobile"
+                        ]
+                      },
+                      "createdAt": {
+                        "type": "date",
+                        "example": "2025-05-05T10:30:00Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new user with required fields",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "summary": "Get an user's information based on the userId",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserById"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an user's information based on userId",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the user"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an user's information based on user_id",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "User deleted successfully"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": [
+          "username",
+          "password",
+          "DOB",
+          "platform"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "Unique identifier for the user",
+            "example": "user00001"
+          },
+          "username": {
+            "type": "string",
+            "minLength": 3,
+            "description": "Full name of the user",
+            "example": "Prachi"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password to login",
+            "example": "Prachi13"
+          },
+          "DOB": {
+            "type": "string",
+            "description": "Date of Birth of the User",
+            "example": "2013-02-13"
+          },
+          "platform": {
+            "type": "array",
+            "enum": [
+              "PC",
+              "Mobile",
+              "PlayStation",
+              "X-Box"
+            ],
+            "description": "Platform user likes to play games",
+            "example": [
+              "PC",
+              "Mobile"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "When the user was created",
+            "example": "2024-01-15"
+          }
+        }
+      },
+      "GetUserById": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "Unique identifier for the user",
+            "example": "user00001"
+          },
+          "username": {
+            "type": "string",
+            "minLength": 3,
+            "description": "Full name of the user",
+            "example": "Prachi"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password to login",
+            "example": "Prachi13"
+          },
+          "DOB": {
+            "type": "string",
+            "description": "Date of Birth of the User",
+            "example": "2013-02-13"
+          },
+          "platform": {
+            "type": "array",
+            "enum": [
+              "PC",
+              "Mobile",
+              "PlayStation",
+              "X-Box"
+            ],
+            "description": "Platform user likes to play games",
+            "example": [
+              "PC",
+              "Mobile"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "When the user was created",
+            "example": "2024-01-15"
+          }
+        }
+      },
+      "UpdateUser": {
+        "type": "object",
+        "description": "At least one field must be provided to update an user",
+        "minProperties": 1,
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "Unique identifier for the user",
+            "example": "user00001"
+          },
+          "username": {
+            "type": "string",
+            "minLength": 3,
+            "description": "Full name of the user",
+            "example": "Prachi"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password to login",
+            "example": "Prachi13"
+          },
+          "DOB": {
+            "type": "string",
+            "description": "Date of Birth of the User",
+            "example": "2013-02-13"
+          },
+          "platform": {
+            "type": "array",
+            "enum": [
+              "PC",
+              "Mobile",
+              "PlayStation",
+              "X-Box"
+            ],
+            "description": "Platform user likes to play games",
+            "example": [
+              "PC",
+              "Mobile"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date",
+            "description": "When the user was created",
+            "example": "2024-01-15"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "error",
+          "message"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error type or code",
+            "example": "VALIDATION_ERROR"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message",
+            "example": "The username field is required"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "example": "username"
+                },
+                "issue": {
+                  "type": "string",
+                  "example": "must be a valid username"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}

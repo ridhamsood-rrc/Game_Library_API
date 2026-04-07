@@ -7,6 +7,10 @@ dotenv.config();
 
 import watchlistSetupSwagger from "../config/watchlistSwagger";
 import router from "../src/api/v1/routes/watchlist.routes";
+import setupSwagger from "../config/swagger";
+import userRoutes from "../src/api/v1/routes/userRoutes";
+import gameRoutes from "./api/v1/routes/gameRoutes"
+import setupSwagger from "../config/gameswaggerConfig";
 
 // Initialize the express application
 const app: Express = express();
@@ -24,5 +28,9 @@ app.get("/", (req, res) => {
 app.use("/api/v1/watchlist", router);
 
 watchlistSetupSwagger(app);
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/games/", gameRoutes)
+
+setupSwagger(app);
 
 export default app;

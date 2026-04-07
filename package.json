@@ -12,6 +12,8 @@
     "build": "tsc",
     "start": "ts-node src/server.ts",
     "generate-docs": "ts-node scripts/watchlist-generate-openapi.ts && npx @redocly/cli build-docs watchlist-openapi.json --output docs/watchlist-index.html"
+    "generate-docs": "ts-node scripts/generate-openapi.ts && npx @redocly/cli build-docs user_openapi.json --output docs/user_index.html"
+    "generate-docs": "ts-node scripts/game-generate-openapi.ts && npx @redocly/cli build-docs openapi.json --output docs/index.html"
   },
   "repository": {
     "type": "git",
@@ -27,6 +29,7 @@
   "homepage": "https://github.com/ridhamsood-rrc/Stock_Market_API#readme",
   "devDependencies": {
     "@redocly/cli": "^2.25.4",
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.5.2",
@@ -44,9 +47,13 @@
     "@types/morgan": "^1.9.10",
     "cors": "^2.8.6",
     "dotenv": "^17.4.1",
+    "helmet": "^8.1.0",
+    "bcrypt": "^6.0.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "firebase-admin": "^13.7.0",
-    "helmet": "^8.1.0",
     "joi": "^18.1.2",
     "morgan": "^1.10.1",
     "swagger-jsdoc": "^6.2.8",
