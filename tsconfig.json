@@ -17,6 +17,7 @@
         "alwaysStrict": true,
         "ignoreDeprecations": "6.0",
         "baseUrl": "./",
+        "types": ["node", "jest"],
         "paths": {
             "*": ["*"]
         }
