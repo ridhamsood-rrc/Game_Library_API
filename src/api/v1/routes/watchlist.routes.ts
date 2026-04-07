@@ -16,14 +16,14 @@ import {
 const router = Router();
 
 /**
- * @swagger
+ * @openapi
  * tags:
  *   name: Watchlist
  *   description: Watchlist management endpoints
  */
 
 /**
- * @swagger
+ * @openapi
  * components:
  *   schemas:
  *     Watchlist:
@@ -51,7 +51,7 @@ const router = Router();
  */
 
 /**
- * @swagger
+ * @openapi
  * /api/v1/watchlist:
  *   post:
  *     summary: Add a game to watchlist
@@ -88,7 +88,7 @@ const router = Router();
  */
 
 /**
- * @swagger
+ * @openapi
  * /api/v1/watchlist/user/{userId}:
  *   get:
  *     summary: Get watchlist by user ID
@@ -108,7 +108,7 @@ const router = Router();
  */
 
 /**
- * @swagger
+ * @openapi
  * /api/v1/watchlist/{watchlistId}:
  *   get:
  *     summary: Get watchlist item by ID

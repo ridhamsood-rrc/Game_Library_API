@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 /**
- * @swagger
+ * @openapi
  * components:
  *   schemas:
  *     CreateWatchlistInput:

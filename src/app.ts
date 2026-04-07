@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+import watchlistSetupSwagger from "../config/watchlistSwagger";
 import router from "../src/api/v1/routes/watchlist.routes";
 
 // Initialize the express application
@@ -21,5 +22,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/watchlist", router);
+
+watchlistSetupSwagger(app);
 
 export default app;
