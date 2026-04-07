@@ -26,12 +26,11 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/watchlist", router);
-
-watchlistSetupSwagger(app);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/games/", gameRoutes)
 
 setupSwagger(app);
 userSetupSwagger(app);
+watchlistSetupSwagger(app);
 
 export default app;
