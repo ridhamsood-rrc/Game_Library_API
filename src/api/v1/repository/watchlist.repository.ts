@@ -1,101 +1,115 @@
 import { db } from "../../../../config/firebaseConfig";
-import {
-    CreateWatchlistInput,
-    UpdateWatchlistInput,
-    Watchlist
-} from "../models/watchlist.model";
+import { watchlistModel } from "../models/watchlist.model";
 
-const COLLECTION_NAME = "watchlists";
+const collection = db.collection("watchlist");
 
-export class WatchlistRepository {
-    async create(userId: string, data: CreateWatchlistInput): Promise<Watchlist> {
-        const newWatchlist: Watchlist = {
-            userId,
-            gameId: data.gameId,
-            addedAt: new Date().toISOString(),
-            status: data.status || "wishlist"
-        };
+// Get all watchlist items
+export const getAllWatchlistItems = async (): Promise<watchlistModel[]> => {
+  const snapshot = await collection.get();
 
-        const docRef = await db.collection(COLLECTION_NAME).add(newWatchlist);
+  return snapshot.docs.map((doc) => ({
+    watchlistId: doc.id,
+    ...(doc.data() as watchlistModel),
+  }));
+};
 
-        return {
-            id: docRef.id,
-            ...newWatchlist
-        };
-    }
+// Get one watchlist item by ID
+export const getWatchlistItemById = async (
+  watchlistId: string
+): Promise<watchlistModel | null> => {
+  const doc = await collection.doc(watchlistId).get();
 
-    async findByUserId(userId: string): Promise<Watchlist[]> {
-        const snapshot = await db
-            .collection(COLLECTION_NAME)
-            .where("userId", "==", userId)
-            .get();
+  if (!doc.exists) return null;
 
-        return snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...(doc.data() as Omit<Watchlist, "id">)
-        }));
-    }
+  return {
+    watchlistId: doc.id,
+    ...(doc.data() as watchlistModel),
+  };
+};
 
-    async findById(id: string): Promise<Watchlist | null> {
-        const doc = await db.collection(COLLECTION_NAME).doc(id).get();
+// Get all watchlist items for a specific user
+export const getWatchlistByUserId = async (
+  userId: string
+): Promise<watchlistModel[]> => {
+  const snapshot = await collection.where("userId", "==", userId).get();
 
-        if (!doc.exists) {
-            return null;
-        }
+  return snapshot.docs.map((doc) => ({
+    watchlistId: doc.id,
+    ...(doc.data() as watchlistModel),
+  }));
+};
 
-        return {
-            id: doc.id,
-            ...(doc.data() as Omit<Watchlist, "id">)
-        };
-    }
+// Create a new watchlist item
+export const createWatchlistItem = async (
+  item: watchlistModel
+): Promise<watchlistModel> => {
+  const snapshot = await collection.get();
+  const count = snapshot.size + 1;
 
-    async findByUserIdAndGameId(userId: string, gameId: string): Promise<Watchlist | null> {
-        const snapshot = await db
-            .collection(COLLECTION_NAME)
-            .where("userId", "==", userId)
-            .where("gameId", "==", gameId)
-            .limit(1)
-            .get();
+  const watchlistId = `watchlist${String(count).padStart(5, "0")}`;
 
-        if (snapshot.empty) {
-            return null;
-        }
+  const newItem = {
+    userId: item.userId,
+    gameId: item.gameId,
+    status: item.status,
+    addedAt: new Date().toISOString().split("T")[0],
+    updatedAt: new Date().toISOString().split("T")[0],
+  };
 
-        const doc = snapshot.docs[0];
+  await collection.doc(watchlistId).set(newItem);
 
-        return {
-            id: doc.id,
-            ...(doc.data() as Omit<Watchlist, "id">)
-        };
-    }
+  return {
+    watchlistId,
+    ...newItem,
+  };
+};
 
-    async update(id: string, data: UpdateWatchlistInput): Promise<Watchlist | null> {
-        const docRef = db.collection(COLLECTION_NAME).doc(id);
-        const existing = await docRef.get();
+// Update existing watchlist item
+export const updateWatchlistItem = async (
+  watchlistId: string,
+  data: Partial<watchlistModel>
+): Promise<watchlistModel> => {
+  const docRef = collection.doc(watchlistId);
+  const doc = await docRef.get();
 
-        if (!existing.exists) {
-            return null;
-        }
+  if (!doc.exists) {
+    throw new Error("Watchlist item not found");
+  }
 
-       await docRef.update(data as Partial<Watchlist>);
+  const updateData = Object.fromEntries(
+    Object.entries(data).filter(
+      ([key, value]) =>
+        key !== "watchlistId" &&
+        key !== "addedAt" &&
+        value !== undefined
+    )
+  );
 
-        const updated = await docRef.get();
+  if (Object.keys(updateData).length === 0) {
+    throw new Error("No valid fields provided for update");
+  }
 
-        return {
-            id: updated.id,
-            ...(updated.data() as Omit<Watchlist, "id">)
-        };
-    }
+  updateData.updatedAt = new Date().toISOString().split("T")[0];
 
-    async delete(id: string): Promise<boolean> {
-        const docRef = db.collection(COLLECTION_NAME).doc(id);
-        const existing = await docRef.get();
+  await docRef.update(updateData);
 
-        if (!existing.exists) {
-            return false;
-        }
+  const updatedDoc = await docRef.get();
 
-        await docRef.delete();
-        return true;
-    }
-}
+  return {
+    watchlistId,
+    ...(updatedDoc.data() as watchlistModel),
+  };
+};
+
+// Delete watchlist item
+export const deleteWatchlistItem = async (
+  watchlistId: string
+): Promise<boolean> => {
+  const docRef = collection.doc(watchlistId);
+  const doc = await docRef.get();
+
+  if (!doc.exists) return false;
+
+  await docRef.delete();
+  return true;
+};

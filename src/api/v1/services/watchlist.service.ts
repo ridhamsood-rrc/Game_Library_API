@@ -1,71 +1,70 @@
+import { watchlistModel } from "../models/watchlist.model";
 import {
-    CreateWatchlistInput,
-    UpdateWatchlistInput,
-    Watchlist
-} from "../models/watchlist.model";
-import { WatchlistRepository } from "../repository/watchlist.repository";
+  getAllWatchlistItems,
+  getWatchlistItemById,
+  getWatchlistByUserId,
+  createWatchlistItem,
+  updateWatchlistItem,
+  deleteWatchlistItem,
+} from "../repository/watchlist.repository";
 
 export class WatchlistService {
-    constructor(private readonly watchlistRepository: WatchlistRepository) {}
+  async getAllWatchlist(): Promise<watchlistModel[]> {
+    return getAllWatchlistItems();
+  }
 
-    async createWatchlist(userId: string, data: CreateWatchlistInput): Promise<Watchlist> {
-        const existing = await this.watchlistRepository.findByUserIdAndGameId(
-            userId,
-            data.gameId
-        );
+  async getWatchlistById(watchlistId: string): Promise<watchlistModel> {
+    const existing = await getWatchlistItemById(watchlistId);
 
-        if (existing) {
-            throw new Error("Game already exists in watchlist");
-        }
-
-        return this.watchlistRepository.create(userId, data);
+    if (!existing) {
+      throw new Error("Watchlist item not found");
     }
 
-    async getUserWatchlist(userId: string): Promise<Watchlist[]> {
-        return this.watchlistRepository.findByUserId(userId);
+    return existing;
+  }
+
+  async getUserWatchlist(userId: string): Promise<watchlistModel[]> {
+    return getWatchlistByUserId(userId);
+  }
+
+  async createWatchlist(data: watchlistModel): Promise<watchlistModel> {
+    const userItems = await getWatchlistByUserId(data.userId);
+
+    const existing = userItems.find((item) => item.gameId === data.gameId);
+
+    if (existing) {
+      throw new Error("Game already exists in watchlist");
     }
 
-    async updateWatchlist(
-        id: string,
-        userId: string,
-        data: UpdateWatchlistInput
-    ): Promise<Watchlist> {
-        const existing = await this.watchlistRepository.findById(id);
+    return createWatchlistItem(data);
+  }
 
-        if (!existing) {
-            throw new Error("Watchlist item not found");
-        }
+  async updateWatchlist(
+    watchlistId: string,
+    data: Partial<watchlistModel>
+  ): Promise<watchlistModel> {
+    const existing = await getWatchlistItemById(watchlistId);
 
-        if (existing.userId !== userId) {
-            throw new Error("Unauthorized");
-        }
-
-        const updated = await this.watchlistRepository.update(id, data);
-
-        if (!updated) {
-            throw new Error("Failed to update watchlist item");
-        }
-
-        return updated;
+    if (!existing) {
+      throw new Error("Watchlist item not found");
     }
 
-    async deleteWatchlist(id: string, userId: string): Promise<void> {
-        const existing = await this.watchlistRepository.findById(id);
+    return updateWatchlistItem(watchlistId, data);
+  }
 
-        if (!existing) {
-            throw new Error("Watchlist item not found");
-        }
+  async deleteWatchlist(watchlistId: string): Promise<void> {
+    const existing = await getWatchlistItemById(watchlistId);
 
-        if (existing.userId !== userId) {
-            throw new Error("Unauthorized");
-        }
-
-        const deleted = await this.watchlistRepository.delete(id);
-
-        if (!deleted) {
-            throw new Error("Failed to delete watchlist item");
-        }
+    if (!existing) {
+      throw new Error("Watchlist item not found");
     }
+
+    const deleted = await deleteWatchlistItem(watchlistId);
+
+    if (!deleted) {
+      throw new Error("Failed to delete watchlist item");
+    }
+  }
 }
 
-export const watchlistService = new WatchlistService(new WatchlistRepository());
+export const watchlistService = new WatchlistService();

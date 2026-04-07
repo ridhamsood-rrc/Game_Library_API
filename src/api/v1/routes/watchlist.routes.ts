@@ -1,15 +1,16 @@
 import { Router } from "express";
 import {
-    createWatchlist,
-    deleteWatchlist,
-    getUserWatchlist,
-    updateWatchlist
+  getAllWatchlist,
+  getWatchlistById,
+  getUserWatchlist,
+  createWatchlist,
+  updateWatchlist,
+  deleteWatchlist,
 } from "../controller/watchlist.controller";
-import { authenticate } from "../middleware/authMiddleware";
 import { validateRequest } from "../middleware/validateRequest";
 import {
-    createWatchlistSchema,
-    updateWatchlistSchema
+  createWatchlistSchema,
+  updateWatchlistSchema,
 } from "../validate/watchlist.validation";
 
 const router = Router();
@@ -27,16 +28,12 @@ const router = Router();
  *   post:
  *     summary: Add a game to watchlist
  *     tags: [Watchlist]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Created
  *   get:
- *     summary: Get user's watchlist
+ *     summary: Get all watchlist items
  *     tags: [Watchlist]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Success
@@ -44,28 +41,44 @@ const router = Router();
 
 /**
  * @swagger
- * /api/v1/watchlist/{id}:
+ * /api/v1/watchlist/user/{userId}:
+ *   get:
+ *     summary: Get watchlist by user ID
+ *     tags: [Watchlist]
+ *     responses:
+ *       200:
+ *         description: Success
+ */
+
+/**
+ * @swagger
+ * /api/v1/watchlist/{watchlistId}:
+ *   get:
+ *     summary: Get watchlist item by ID
+ *     tags: [Watchlist]
+ *     responses:
+ *       200:
+ *         description: Success
  *   put:
  *     summary: Update watchlist item
  *     tags: [Watchlist]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Updated
  *   delete:
  *     summary: Delete watchlist item
  *     tags: [Watchlist]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Deleted
  */
 
-router.post("/", authenticate, validateRequest(createWatchlistSchema), createWatchlist);
-router.get("/", authenticate, getUserWatchlist);
-router.put("/:id", authenticate, validateRequest(updateWatchlistSchema), updateWatchlist);
-router.delete("/:id", authenticate, deleteWatchlist);
+router.get("/", getAllWatchlist);
+router.get("/user/:userId", getUserWatchlist);
+router.get("/:watchlistId", getWatchlistById);
+
+router.post("/", validateRequest(createWatchlistSchema), createWatchlist);
+router.put("/:watchlistId", validateRequest(updateWatchlistSchema), updateWatchlist);
+router.delete("/:watchlistId", deleteWatchlist);
 
 export default router;
