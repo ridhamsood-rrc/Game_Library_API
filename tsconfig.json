@@ -16,10 +16,11 @@
         "alwaysStrict": true,
         "ignoreDeprecations": "6.0",
         "baseUrl": "./",
+        "types": ["node", "jest"],
         "paths": {
             "*": ["*"]
         }
     },
-    "include": ["src/**/*", "test/**/*", "config/**/*"],
+    "include": ["src/**/*", "tests/**/*", "config/**/*"],
     "exclude": ["node_modules", "dist"]
 }
