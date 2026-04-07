@@ -1,5 +1,5 @@
 import { userModel } from "../models/userModel";
-import * as usersRepository from "../repository/firestoreRepository";
+import * as usersRepository from "../repository/userFirestoreRepository";
 
 export const getAllUsers = (): Promise<userModel[]> => {
   return usersRepository.getAllUsers();

@@ -1,6 +1,6 @@
 import { userModel } from '../src/api/v1/models/userModel';
 import * as userService from '../src/api/v1/services/userService';
-import * as repositoryModule from '../src/api/v1/repository/firestoreRepository';
+import * as repositoryModule from '../src/api/v1/repository/userFirestoreRepository';
 
 // Mock the repository module
 jest.mock('../src/api/v1/repository/firestoreRepository');
