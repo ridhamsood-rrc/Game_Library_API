@@ -7,7 +7,7 @@ import {
   updateWatchlist,
   deleteWatchlist,
 } from "../controller/watchlist.controller";
-import { validateRequest } from "../middleware/validateRequest";
+import { validateRequest } from "../middleware/watchlistValidateRequest";
 import {
   createWatchlistSchema,
   updateWatchlistSchema,
