@@ -11,7 +11,7 @@
     "test:watch": "jest --watch",
     "build": "tsc",
     "start": "ts-node src/server.ts",
-    "generate-docs": "ts-node scripts/game-generate-openapi.ts && npx @redocly/cli build-docs openapi.json --output docs/index.html"
+    "generate-docs-game": "ts-node scripts/game-generate-openapi.ts && npx @redocly/cli build-docs game_openapi.json --output docs/index.html"
   },
   "repository": {
     "type": "git",
