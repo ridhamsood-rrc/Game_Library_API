@@ -1,0 +1,42 @@
+// import express, and its type
+import express, {Express} from "express";
+import morgan from "morgan";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+import userSetupSwagger from "../config/swagger";
+import watchlistSetupSwagger from "../config/watchlistSwagger";
+import router from "../src/api/v1/routes/watchlist.routes";
+import userRoutes from "../src/api/v1/routes/userRoutes";
+import gameRoutes from "./api/v1/routes/gameRoutes"
+import setupSwagger from "../config/gameSwaggerConfig";
+import signInRoute from "../src/api/v1/routes/signInRoutes";
+import adminRoute from "../src/api/v1/routes/adminRoutes";
+
+// Initialize the express application
+const app: Express = express();
+
+// logs the request
+app.use(morgan("combined"))
+
+// parse json values automatically from the request body
+app.use(express.json())
+
+app.get("/", (req, res) => {
+    res.send("Response to request");
+});
+
+app.use("/api/v1", adminRoute);
+
+app.use("/api/v1", signInRoute)
+
+app.use("/api/v1/watchlist", router);
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/games/", gameRoutes)
+
+setupSwagger(app);
+userSetupSwagger(app);
+watchlistSetupSwagger(app);
+
+export default app;
