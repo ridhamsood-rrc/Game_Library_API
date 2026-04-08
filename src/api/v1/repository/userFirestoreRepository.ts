@@ -18,23 +18,30 @@ export const getUserById = async (userId: string): Promise<userModel | null> => 
 };
 
 export const createUsers = async (users: userModel): Promise<userModel> => {
-  // Get all existing events to determine next ID
-  const snapshot = await collection.get();
-  const count = snapshot.size + 1;
-
-  // Generate ID like user00001, user00002, etc.
-  let userId = `user${String(count).padStart(5, "0")}`;
-
-  await collection.doc(userId).set({
-    ...users,
-    DOB: new Date(users.DOB).toISOString().split("T")[0],
-    createdAt: new Date().toISOString().split("T")[0],
+  const counterRef = db.collection("counters").doc("users");
+  const newUser = await db.runTransaction(async (transaction) => {
+    const counterDoc = await transaction.get(counterRef);
+    let newCount = 1;
+    if (!counterDoc.exists) {
+      transaction.set(counterRef, { currentId: 1 });
+    } else {
+      newCount = counterDoc.data()!.currentId + 1;
+      transaction.update(counterRef, { currentId: newCount });
+    }
+    const userId = `user${String(newCount).padStart(5, "0")}`;
+    const userRef = collection.doc(userId);
+    transaction.set(userRef, {
+      ...users,
+      userId,
+      DOB: new Date(users.DOB).toISOString().split("T")[0],
+      createdAt: new Date().toISOString().split("T")[0],
+    });
+    return {
+      ...users,
+      userId,
+    };
   });
-
-  return {
-    ...users,
-    userId
-  };
+  return newUser;
 };
 
 export const updateUser = async (
