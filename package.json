@@ -11,7 +11,7 @@
     "test:watch": "jest --watch",
     "build": "tsc",
     "start": "ts-node src/server.ts",
-    "generate-docs": "ts-node scripts/generate-openapi.ts && npx @redocly/cli build-docs user_openapi.json --output docs/user_index.html"
+    "generate-docs-users": "ts-node scripts/generate-openapi.ts && npx @redocly/cli build-docs user_openapi.json --output docs/user_index.html"
   },
   "repository": {
     "type": "git",
