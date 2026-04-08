@@ -4,10 +4,10 @@ const swaggerOptions: swaggerJsdoc.Options = {
     definition: {
         openapi: "3.0.0",
         info: {
-            title: "Game Information API Documentation",
+            title: "Game Library API Documentation",
             version: "1.0.0",
             description:
-                "This is the API documentation for the Game Information application.",
+                "This is the API documentation for the Game Library application.",
         },
         servers: [
             {
