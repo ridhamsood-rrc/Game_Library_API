@@ -5,6 +5,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+import userSetupSwagger from "../config/swagger";
+import watchlistSetupSwagger from "../config/watchlistSwagger";
+import router from "../src/api/v1/routes/watchlist.routes";
+import userRoutes from "../src/api/v1/routes/userRoutes";
 import gameRoutes from "./api/v1/routes/gameRoutes"
 import setupSwagger from "../config/gameSwaggerConfig";
 
@@ -21,8 +25,12 @@ app.get("/", (req, res) => {
     res.send("Response to request");
 });
 
+app.use("/api/v1/watchlist", router);
+app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/games/", gameRoutes)
 
 setupSwagger(app);
+userSetupSwagger(app);
+watchlistSetupSwagger(app);
 
 export default app;
