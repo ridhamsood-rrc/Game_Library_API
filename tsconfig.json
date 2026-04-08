@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "target": "ES6",
+        "types": ["jest", "node"],
         "module": "commonjs",
         "strict": true,
         "esModuleInterop": true,
@@ -16,7 +17,6 @@
         "alwaysStrict": true,
         "ignoreDeprecations": "6.0",
         "baseUrl": "./",
-        "types": ["node", "jest"],
         "paths": {
             "*": ["*"]
         }
