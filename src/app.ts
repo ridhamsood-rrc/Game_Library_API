@@ -11,6 +11,8 @@ import router from "../src/api/v1/routes/watchlist.routes";
 import userRoutes from "../src/api/v1/routes/userRoutes";
 import gameRoutes from "./api/v1/routes/gameRoutes"
 import setupSwagger from "../config/gameSwaggerConfig";
+import signInRoute from "../src/api/v1/routes/signInRoutes";
+import adminRoute from "../src/api/v1/routes/adminRoutes";
 
 // Initialize the express application
 const app: Express = express();
@@ -24,6 +26,10 @@ app.use(express.json())
 app.get("/", (req, res) => {
     res.send("Response to request");
 });
+
+app.use("/api/v1", adminRoute);
+
+app.use("/api/v1", signInRoute)
 
 app.use("/api/v1/watchlist", router);
 app.use("/api/v1/users", userRoutes);
