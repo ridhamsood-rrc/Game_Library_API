@@ -2,6 +2,8 @@ import { Router } from "express";
 import * as userController from "../controller/userController";
 import { createUserSchema, updateUserSchema } from "../validate/userValidation";
 import { validateRequest } from "../middleware/validateRequest";
+import authenticate from "../middleware/authenticate";
+import isAuthorized from "../middleware/authorize";
 
 const router = Router();
 
@@ -42,7 +44,10 @@ const router = Router();
  *                      type: date
  *                      example: "2025-05-05T10:30:00Z"
  */
-router.get("/", userController.getAllUsers);
+router.get("/",
+    authenticate,
+    isAuthorized({hasRole: ["manager"]}),
+    userController.getAllUsers);
 
 // Get user by id
 /**
@@ -77,7 +82,10 @@ router.get("/", userController.getAllUsers);
  *                   example: "User not found"
  */
 
-router.get("/:id", userController.getUsersById);
+router.get("/:id",
+    authenticate,
+    isAuthorized({hasRole: ["manager"]}),
+    userController.getUsersById);
 
 // Create User
 /**
@@ -155,6 +163,8 @@ router.post("/",
  *                   example: "User not found"
  */
 router.put("/:id",
+    authenticate,
+    isAuthorized({hasRole: ["manager"]}),
     validateRequest(updateUserSchema),
     userController.updateUser);
 
@@ -196,6 +206,9 @@ router.put("/:id",
  *                   type: string
  *                   example: "User not found"
  */
-router.delete("/:id", userController.deleteUser);
+router.delete("/:id",
+    authenticate,
+    isAuthorized({hasRole: ["manager"]}),
+    userController.deleteUser);
 
 export default router
