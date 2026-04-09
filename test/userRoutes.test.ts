@@ -3,6 +3,23 @@ import express, {Express} from "express";
 import router from "../src/api/v1/routes/userRoutes";
 import * as userController from "../src/api/v1/controller/userController"
 import { HTTP_STATUS } from "../src/constants/httpConstants";
+
+jest.mock("../src/api/v1/middleware/authenticate", () => ({
+  __esModule: true,
+  default: (req: any, res: any, next: any) => {
+    req.user = { role: "manager" };
+    next();
+  },
+}));
+
+jest.mock("../src/api/v1/middleware/authorize", () => ({
+  __esModule: true,
+  default: () => (req: any, res: any, next: any) => next(),
+}));
+
+jest.mock("../src/api/v1/middleware/validateRequest", () => ({
+  validateRequest: () => (req: any, res: any, next: any) => next(),
+}));
  
 jest.mock("../src/api/v1/controller/userController")
  
