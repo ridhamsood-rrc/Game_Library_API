@@ -150,6 +150,11 @@ export const createUserSchema = Joi.object({
         "any.required": '"platform" is required.',
         "any.only": '"platform" must be one of [PC, PlayStation, X-Box, Mobile]'
     }),
+    subscription: Joi.string().required().valid("free", "premium").messages({
+        "string.empty": '"subscription" cannot be empty',
+        "any.required": '"subscription" is required',
+        "any.only": '"subscription" must be one of [free, premium]'
+    }),
     createdAt: Joi.date().optional().default(new Date())
   });
 
