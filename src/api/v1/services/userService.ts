@@ -9,6 +9,10 @@ export const getUserById = (id: string) => {
   return usersRepository.getUserById(id);
 };
 
+export const getUserByUid = (uid: string) => {
+  return usersRepository.getUserByUid(uid);
+};
+
 export const createUsers = (data: userModel) => {
   return usersRepository.createUsers(data);
 };
