@@ -1,3 +1,5 @@
+import { randomUUID } from "crypto";
+
 import { db } from "../../../../config/firebaseConfig";
 import { userModel } from "../models/userModel";
 
@@ -17,7 +19,27 @@ export const getUserById = async (userId: string): Promise<userModel | null> => 
   return { userId: doc.id, ...(doc.data() as userModel) };
 };
 
-export const createUsers = async (users: userModel): Promise<userModel> => {
+export const getUserByUid = async (uid: string) => {
+  const snapshot = await collection
+    .where("uid", "==", uid)
+    .limit(1)
+    .get();
+
+  if (snapshot.empty) return null;
+
+  const doc = snapshot.docs[0];
+
+  return {
+    userId: doc.id,
+    ...(doc.data() as userModel),
+  };
+};
+
+export const createUsers = async (
+  users: userModel
+): Promise<userModel> => {
+
+  const uid = randomUUID(); 
   const counterRef = db.collection("counters").doc("users");
   const newUser = await db.runTransaction(async (transaction) => {
     const counterDoc = await transaction.get(counterRef);
@@ -30,15 +52,20 @@ export const createUsers = async (users: userModel): Promise<userModel> => {
     }
     const userId = `user${String(newCount).padStart(5, "0")}`;
     const userRef = collection.doc(userId);
+    const message = "Copy the UID and paste it in the Header access the library endpoints as user otherwise you will be treated as a guest."
+
     transaction.set(userRef, {
       ...users,
       userId,
+      uid: uid,
       DOB: new Date(users.DOB).toISOString().split("T")[0],
       createdAt: new Date().toISOString().split("T")[0],
     });
     return {
-      ...users,
+      uid,
       userId,
+      ...users,
+      message
     };
   });
   return newUser;
