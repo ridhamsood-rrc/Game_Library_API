@@ -5,6 +5,7 @@ import { itemSchemas } from "../validation/gameValidation";
 import authenticate from "../middleware/authenticate";
 import isAuthorized from "../middleware/authorize";
 import { identifyUser, subscriptionMiddleware } from "../middleware/subscriptionMiddleware";
+import { rateLimitBySubscription } from "../middleware/rateLimitingMiddleware";
 
 const router: Router = express.Router();
 
@@ -59,6 +60,7 @@ const router: Router = express.Router();
 router.get("/",
     identifyUser,
     subscriptionMiddleware,
+    rateLimitBySubscription,
     gameController.getGames);
 
 /**
