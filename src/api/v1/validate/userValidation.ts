@@ -15,7 +15,6 @@ import Joi from "joi";
  *         - password
  *         - DOB
  *         - platform
- *         - subscription
  *       properties:
  *         userId:
  *           type: string
@@ -39,11 +38,6 @@ import Joi from "joi";
  *           enum: [PC, Mobile, PlayStation, X-Box]
  *           description: Platform user likes to play games
  *           example: ["PC", "Mobile"]
- *         subscription:
- *           type: string
- *           enum: [free, premium]
- *           description: Gives the status of the user's subscription plan
- *           example: "premium"
  *         createdAt:
  *           type: string
  *           description: When the user was created
@@ -73,11 +67,6 @@ import Joi from "joi";
  *           enum: [PC, Mobile, PlayStation, X-Box]
  *           description: Platform user likes to play games
  *           example: ["PC", "Mobile"]
- *         subscription:
- *           type: string
- *           enum: [free, premium]
- *           description: Gives the status of the user's subscription plan
- *           example: "premium"
  *         createdAt:
  *           type: string
  *           description: When the user was created
@@ -109,11 +98,6 @@ import Joi from "joi";
  *           enum: [PC, Mobile, PlayStation, X-Box]
  *           description: Platform user likes to play games
  *           example: ["PC", "Mobile"]
- *         subscription:
- *           type: string
- *           enum: [free, premium]
- *           description: Gives the status of the user's subscription plan
- *           example: "premium"
  *         createdAt:
  *           type: string
  *           format: date
@@ -166,11 +150,6 @@ export const createUserSchema = Joi.object({
         "any.required": '"platform" is required.',
         "any.only": '"platform" must be one of [PC, PlayStation, X-Box, Mobile]'
     }),
-    subscription: Joi.string().required().valid("free", "premium").messages({
-        "string.empty": '"subscription" cannot be empty',
-        "any.required": '"subscription" is required',
-        "any.only": '"subscription" must be one of [free, premium]'
-    }),
     createdAt: Joi.date().optional().default(new Date())
   });
 
@@ -201,11 +180,6 @@ export const updateUserSchema = {
             "string.empty": '"platform" cannot be empty.',
             "any.required": '"platform" is required.',
             "any.only": '"platform" must be one of [PC, PlayStation, X-Box, Mobile]'
-        }),
-        subscription: Joi.string().valid("free", "premium").messages({
-        "string.empty": '"subscription" cannot be empty',
-        "any.required": '"subscription" is required',
-        "any.only": '"subscription" must be one of [free, premium]'
         })
     }
     ).min(1)

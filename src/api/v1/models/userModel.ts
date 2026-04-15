@@ -4,6 +4,5 @@ export interface userModel {
     password: string;
     DOB: string;
     platform: Array<string>;
-    subscription: string;
     createdAt: string;
 }
