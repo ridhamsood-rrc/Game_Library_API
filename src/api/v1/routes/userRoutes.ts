@@ -84,7 +84,7 @@ router.get("/",
 
 router.get("/:id",
     authenticate,
-    isAuthorized({hasRole: ["manager"]}),
+    isAuthorized({hasRole: ["manager", "user"]}),
     userController.getUsersById);
 
 // Create User
@@ -164,7 +164,7 @@ router.post("/",
  */
 router.put("/:id",
     authenticate,
-    isAuthorized({hasRole: ["manager"]}),
+    isAuthorized({hasRole: ["manager", "user"]}),
     validateRequest(updateUserSchema),
     userController.updateUser);
 
@@ -208,7 +208,7 @@ router.put("/:id",
  */
 router.delete("/:id",
     authenticate,
-    isAuthorized({hasRole: ["manager"]}),
+    isAuthorized({hasRole: ["manager", "user"]}),
     userController.deleteUser);
 
 export default router

@@ -12,6 +12,8 @@ import {
   createWatchlistSchema,
   updateWatchlistSchema,
 } from "../validate/watchlist.validation";
+import authenticate from "../middleware/authenticate";
+import isAuthorized from "../middleware/authorize";
 
 const router = Router();
 
@@ -167,12 +169,28 @@ const router = Router();
  *         description: Watchlist item not found
  */
 
-router.get("/", getAllWatchlist);
-router.get("/user/:userId", getUserWatchlist);
+router.get("/",
+  authenticate,
+  isAuthorized({hasRole: ["manager"]}),
+  getAllWatchlist);
+
 router.get("/:watchlistId", getWatchlistById);
 
-router.post("/", validateRequest(createWatchlistSchema), createWatchlist);
-router.put("/:watchlistId", validateRequest(updateWatchlistSchema), updateWatchlist);
-router.delete("/:watchlistId", deleteWatchlist);
+router.post("/",
+  authenticate,
+  isAuthorized({hasRole: ["user"]}),
+  validateRequest(createWatchlistSchema),
+  createWatchlist);
+
+router.put("/:watchlistId",
+  authenticate,
+  isAuthorized({hasRole: ["manager", "user"]}),
+  validateRequest(updateWatchlistSchema),
+  updateWatchlist);
+
+router.delete("/:watchlistId",
+  authenticate,
+  isAuthorized({hasRole: ["manager", "user"]}),
+  deleteWatchlist);
 
 export default router;
