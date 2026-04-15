@@ -7,7 +7,6 @@ jest.mock('../src/api/v1/repository/userFirestoreRepository');
 
 const mockUser: userModel = {
     username: "Prachi",
-    password: "Prachi13",
     DOB: "2012-02-13",
     platform: ["PC"],
     createdAt: "20226-02-02"
