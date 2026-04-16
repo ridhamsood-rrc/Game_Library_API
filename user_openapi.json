@@ -278,6 +278,7 @@
           "username",
           "password",
           "DOB",
+          "subscription",
           "platform"
         ],
         "properties": {
@@ -315,6 +316,15 @@
               "PC",
               "Mobile"
             ]
+          },
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "free",
+              "premium"
+            ],
+            "description": "The subscription plan of the user",
+            "example": "free"
           },
           "createdAt": {
             "type": "string",
@@ -360,6 +370,15 @@
               "PC",
               "Mobile"
             ]
+          },
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "free",
+              "premium"
+            ],
+            "description": "The subscription plan of the user",
+            "example": "free"
           },
           "createdAt": {
             "type": "string",
@@ -407,6 +426,15 @@
               "PC",
               "Mobile"
             ]
+          },
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "free",
+              "premium"
+            ],
+            "description": "The subscription plan of the user",
+            "example": "free"
           },
           "createdAt": {
             "type": "string",
