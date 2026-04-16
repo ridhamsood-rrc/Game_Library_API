@@ -4,6 +4,8 @@ import { createUserSchema, updateUserSchema } from "../validate/userValidation";
 import { validateRequest } from "../middleware/validateRequest";
 import authenticate from "../middleware/authenticate";
 import isAuthorized from "../middleware/authorize";
+import { subscriptionMiddleware } from "../middleware/subscriptionMiddleware";
+import { rateLimitBySubscription } from "../middleware/rateLimitingMiddleware";
 
 const router = Router();
 
@@ -84,7 +86,9 @@ router.get("/",
 
 router.get("/:id",
     authenticate,
-    isAuthorized({hasRole: ["manager", "freeuser", "premiumUser"]}),
+    isAuthorized({hasRole: ["manager", "freeUser", "premiumUser"]}),
+    subscriptionMiddleware,
+    rateLimitBySubscription(),
     userController.getUsersById);
 
 // Create User
@@ -115,7 +119,6 @@ router.get("/:id",
  *               $ref: '#/components/schemas/Error'
  */
 router.post("/",
-    authenticate,
     validateRequest({ body: createUserSchema}),
     userController.createUsers);
 
@@ -165,7 +168,9 @@ router.post("/",
  */
 router.put("/:id",
     authenticate,
-    isAuthorized({hasRole: ["manager", "freeuser", "premiumUser"]}),
+    isAuthorized({hasRole: ["manager", "freeUser", "premiumUser"]}),
+    subscriptionMiddleware,
+    rateLimitBySubscription(),
     validateRequest(updateUserSchema),
     userController.updateUser);
 
@@ -209,7 +214,9 @@ router.put("/:id",
  */
 router.delete("/:id",
     authenticate,
-    isAuthorized({hasRole: ["manager", "freeuser", "premiumUser"]}),
+    isAuthorized({hasRole: ["manager", "freeUser", "premiumUser"]}),
+    subscriptionMiddleware,
+    rateLimitBySubscription(),
     userController.deleteUser);
 
 export default router

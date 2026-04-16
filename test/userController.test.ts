@@ -24,6 +24,9 @@ describe('Controller Name', () => {
       query: {}
     };
     mockRes = {
+      locals: {
+        uid: "user_id"
+      },
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
       send: jest.fn()
@@ -37,7 +40,7 @@ describe('Controller Name', () => {
       mockReq.body = {
         username: "Prachi",
         DOB: "2012-09-09",
-        password: "Prachi13",
+        subscription: "free",
         platform: ["PC", "Mobile"]
       }
 
