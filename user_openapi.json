@@ -37,10 +37,6 @@
                         "type": "string",
                         "example": "Prachi"
                       },
-                      "password": {
-                        "type": "string",
-                        "example": "Prachi13"
-                      },
                       "DOB": {
                         "type": "string",
                         "example": "2012-05-03"
@@ -51,6 +47,10 @@
                           "PC",
                           "Mobile"
                         ]
+                      },
+                      "subscription": {
+                        "type": "string",
+                        "example": "premium"
                       },
                       "createdAt": {
                         "type": "date",
@@ -276,7 +276,6 @@
         "type": "object",
         "required": [
           "username",
-          "password",
           "DOB",
           "subscription",
           "platform"
@@ -292,11 +291,6 @@
             "minLength": 3,
             "description": "Full name of the user",
             "example": "Prachi"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password to login",
-            "example": "Prachi13"
           },
           "DOB": {
             "type": "string",
@@ -346,11 +340,6 @@
             "minLength": 3,
             "description": "Full name of the user",
             "example": "Prachi"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password to login",
-            "example": "Prachi13"
           },
           "DOB": {
             "type": "string",
@@ -402,11 +391,6 @@
             "minLength": 3,
             "description": "Full name of the user",
             "example": "Prachi"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password to login",
-            "example": "Prachi13"
           },
           "DOB": {
             "type": "string",

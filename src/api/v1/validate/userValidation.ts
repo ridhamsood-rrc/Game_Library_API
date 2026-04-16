@@ -12,7 +12,6 @@ import Joi from "joi";
  *       type: object
  *       required:
  *         - username
- *         - password
  *         - DOB
  *         - subscription
  *         - platform
@@ -26,10 +25,6 @@ import Joi from "joi";
  *           minLength: 3
  *           description: Full name of the user
  *           example: "Prachi"
- *         password:
- *           type: string
- *           description: User's password to login
- *           example: "Prachi13"
  *         DOB:
  *           type: string
  *           description: Date of Birth of the User
@@ -60,10 +55,6 @@ import Joi from "joi";
  *           minLength: 3
  *           description: Full name of the user
  *           example: "Prachi"
- *         password:
- *           type: string
- *           description: User's password to login
- *           example: "Prachi13"
  *         DOB:
  *           type: string
  *           description: Date of Birth of the User
@@ -96,10 +87,6 @@ import Joi from "joi";
  *           minLength: 3
  *           description: Full name of the user
  *           example: "Prachi"
- *         password:
- *           type: string
- *           description: User's password to login
- *           example: "Prachi13"
  *         DOB:
  *           type: string
  *           description: Date of Birth of the User

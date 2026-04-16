@@ -92,26 +92,6 @@ const router = Router();
 
 /**
  * @openapi
- * /api/v1/watchlist/user/{userId}:
- *   get:
- *     summary: Get watchlist by user ID
- *     tags: [Watchlist]
- *     parameters:
- *       - in: path
- *         name: userId
- *         required: true
- *         schema:
- *           type: string
- *         description: ID of the user
- *     responses:
- *       200:
- *         description: Successfully retrieved user watchlist
- *       404:
- *         description: No watchlist found
- */
-
-/**
- * @openapi
  * /api/v1/watchlist/{watchlistId}:
  *   get:
  *     summary: Get watchlist item by ID

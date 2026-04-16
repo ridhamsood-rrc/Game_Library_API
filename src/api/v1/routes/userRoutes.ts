@@ -33,15 +33,15 @@ const router = Router();
  *                    username:
  *                      type: string
  *                      example: "Prachi"
- *                    password:
- *                      type: string
- *                      example: "Prachi13"
  *                    DOB:
  *                      type: string
  *                      example: "2012-05-03"
  *                    platform:
  *                      type: array
  *                      example: ["PC", "Mobile"]
+ *                    subscription:
+ *                      type: string
+ *                      example: "premium"
  *                    createdAt:
  *                      type: date
  *                      example: "2025-05-05T10:30:00Z"
