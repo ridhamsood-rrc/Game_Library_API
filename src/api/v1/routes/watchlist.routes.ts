@@ -177,19 +177,19 @@ router.get("/:watchlistId", getWatchlistById);
 
 router.post("/",
   authenticate,
-  isAuthorized({hasRole: ["user"]}),
+  isAuthorized({hasRole: ["freeuser", "premiumUser"]}),
   validateRequest(createWatchlistSchema),
   createWatchlist);
 
 router.put("/:watchlistId",
   authenticate,
-  isAuthorized({hasRole: ["manager", "user"]}),
+  isAuthorized({hasRole: ["manager", "freeuser", "premiumUser"]}),
   validateRequest(updateWatchlistSchema),
   updateWatchlist);
 
 router.delete("/:watchlistId",
   authenticate,
-  isAuthorized({hasRole: ["manager", "user"]}),
+  isAuthorized({hasRole: ["manager", "freeuser", "premiumUser"]}),
   deleteWatchlist);
 
 export default router;

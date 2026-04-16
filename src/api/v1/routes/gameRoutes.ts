@@ -91,7 +91,7 @@ router.get("/", gameController.getGames);
 
 router.get("/:id",
     authenticate,
-    isAuthorized({hasRole: ["user"]}),
+    isAuthorized({hasRole: ["freeuser", "premiumUser"]}),
     validateRequest(itemSchemas.getGameById),
     gameController.getGameById);
 
