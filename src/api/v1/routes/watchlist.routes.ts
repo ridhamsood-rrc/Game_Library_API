@@ -13,6 +13,8 @@ import {
 } from "../validate/watchlist.validation";
 import authenticate from "../middleware/authenticate";
 import isAuthorized from "../middleware/authorize";
+import { subscriptionMiddleware } from "../middleware/subscriptionMiddleware";
+import { rateLimitBySubscription } from "../middleware/rateLimitingMiddleware";
 
 const router = Router();
 
@@ -173,23 +175,33 @@ router.get("/",
   isAuthorized({hasRole: ["manager"]}),
   getAllWatchlist);
 
-router.get("/:watchlistId", getWatchlistById);
+router.get("/:watchlistId",
+  authenticate,
+  subscriptionMiddleware,
+  rateLimitBySubscription(),
+  getWatchlistById);
 
 router.post("/",
   authenticate,
-  isAuthorized({hasRole: ["freeuser", "premiumUser"]}),
+  isAuthorized({hasRole: ["freeUser", "premiumUser"]}),
+  subscriptionMiddleware,
+  rateLimitBySubscription(),
   validateRequest(createWatchlistSchema),
   createWatchlist);
 
 router.put("/:watchlistId",
   authenticate,
-  isAuthorized({hasRole: ["manager", "freeuser", "premiumUser"]}),
+  isAuthorized({hasRole: ["manager", "freeUser", "premiumUser"]}),
+  subscriptionMiddleware,
+  rateLimitBySubscription(),
   validateRequest(updateWatchlistSchema),
   updateWatchlist);
 
 router.delete("/:watchlistId",
   authenticate,
-  isAuthorized({hasRole: ["manager", "freeuser", "premiumUser"]}),
+  isAuthorized({hasRole: ["manager", "freeUser", "premiumUser"]}),
+  subscriptionMiddleware,
+  rateLimitBySubscription(),
   deleteWatchlist);
 
 export default router;
