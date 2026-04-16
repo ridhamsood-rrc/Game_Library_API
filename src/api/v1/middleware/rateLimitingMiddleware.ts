@@ -1,19 +1,24 @@
-import rateLimit from 'express-rate-limit';
-import { RATE_LIMITS, Subscription } from '../../../../config/rateLimitConfig';
+import rateLimit from "express-rate-limit";
+ 
+type Subscription = "free" | "premium"
+ 
+const RATE_LIMITS = {
+    free: 5,
+    premium: 100
+}
+ 
+export const rateLimitBySubscription = () => rateLimit({
+    windowMs: 60 * 1000,
+    max: (req, res) => {
+        const subscription = res.locals.subscription as Subscription
 
-export const rateLimitBySubscription = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: (req, res) => {
-    const subscription = (res.locals.subscription || 'guest') as Subscription;
-    return RATE_LIMITS[subscription] || 5;
-  },
-  keyGenerator: (req, res) => {
-    if(res.locals.uid) {
-        return `user-${res.locals.uid}` }
-        return`ip-${req.ip}`;
-  },
-  message: {
-    error: "Rate Limit reached",
-    upgrade: "Upgrade to premium to get access to all the games in the library.",
-  },
-});
+        return RATE_LIMITS[subscription]
+    },
+    keyGenerator: (req, res) => {
+      return `ip-${res.locals.uid}`
+    },
+    message: {
+        error: "Rate Limit reached",
+        upgrade: "Upgrade to premium to get access to all the games in the library."
+    }
+})
