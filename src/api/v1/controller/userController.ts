@@ -50,7 +50,9 @@ export const createUsers = async (
 ) => {
   try {
 
-    const users = await userService.createUsers(req.body)
+    const user_id = res.locals.uid
+
+    const users = await userService.createUsers(user_id, req.body)
 
     res.status(HTTP_STATUS.CREATED).json({
       message: "User created successfully",
