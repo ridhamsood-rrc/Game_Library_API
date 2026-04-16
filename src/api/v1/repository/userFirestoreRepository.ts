@@ -1,5 +1,3 @@
-import { randomUUID } from "crypto";
-
 import { db } from "../../../../config/firebaseConfig";
 import { userModel } from "../models/userModel";
 
@@ -8,66 +6,41 @@ const collection = db.collection("users");
 export const getAllUsers = async (): Promise<userModel[]> => {
   const snapshot = await collection.get();
   return snapshot.docs.map((doc) => ({
-    id: doc.id,
     ...(doc.data() as userModel),
   }));
 };
 
-export const getUserById = async (userId: string): Promise<userModel | null> => {
-  const doc = await collection.doc(userId).get();
-  if (!doc.exists) return null;
-  return { userId: doc.id, ...(doc.data() as userModel) };
-};
+export const getUserById = async (uid: string): Promise<userModel> => {
+  const doc = await collection.doc(uid).get();
+  const data = doc.data()!;
 
-export const getUserByUid = async (uid: string) => {
-  const snapshot = await collection
-    .where("uid", "==", uid)
-    .limit(1)
-    .get();
-
-  if (snapshot.empty) return null;
-
-  const doc = snapshot.docs[0];
-
-  return {
-    userId: doc.id,
-    ...(doc.data() as userModel),
+  return { 
+    userId: data.userId,
+    username: data.username,
+    DOB: data.DOB.toDate().toISOString().split("T")[0],
+    subscription: data.subscription,
+    platform: data.platform,
+    createdAt: data.createdAt
   };
 };
 
 export const createUsers = async (
+  user_id: string,
   users: userModel
 ): Promise<userModel> => {
 
-  const uid = randomUUID(); 
-  const counterRef = db.collection("counters").doc("users");
-  const newUser = await db.runTransaction(async (transaction) => {
-    const counterDoc = await transaction.get(counterRef);
-    let newCount = 1;
-    if (!counterDoc.exists) {
-      transaction.set(counterRef, { currentId: 1 });
-    } else {
-      newCount = counterDoc.data()!.currentId + 1;
-      transaction.update(counterRef, { currentId: newCount });
-    }
-    const userId = `user${String(newCount).padStart(5, "0")}`;
-    const userRef = collection.doc(userId);
-    const message = "Copy the UID and paste it in the Header access the library endpoints as user otherwise you will be treated as a guest."
+  const userId = user_id;
+  const userRef = collection.doc(userId);
 
-    transaction.set(userRef, {
-      ...users,
-      userId,
-      uid: uid,
-      DOB: new Date(users.DOB).toISOString().split("T")[0],
-      createdAt: new Date().toISOString().split("T")[0],
-    });
-    return {
-      uid,
-      userId,
-      ...users,
-      message
-    };
-  });
+  const newUser = {
+    userId,
+    ...users,
+    DOB: users.DOB,
+    createdAt: new Date().toISOString().split("T")[0],
+  };
+
+  await userRef.set(newUser);
+
   return newUser;
 };
 

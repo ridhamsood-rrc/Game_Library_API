@@ -4,8 +4,6 @@ import { validateRequest } from "../middleware/validate";
 import { itemSchemas } from "../validation/gameValidation";
 import authenticate from "../middleware/authenticate";
 import isAuthorized from "../middleware/authorize";
-import { identifyUser, subscriptionMiddleware } from "../middleware/subscriptionMiddleware";
-import { rateLimitBySubscription } from "../middleware/rateLimitingMiddleware";
 
 const router: Router = express.Router();
 
@@ -57,11 +55,7 @@ const router: Router = express.Router();
  *                      type: date
  *                      example: "2026-05-03T10:30:00Z"
  */
-router.get("/",
-    identifyUser,
-    subscriptionMiddleware,
-    rateLimitBySubscription,
-    gameController.getGames);
+router.get("/", gameController.getGames);
 
 /**
  * @openapi
@@ -96,8 +90,8 @@ router.get("/",
  */
 
 router.get("/:id",
-    identifyUser,
-    subscriptionMiddleware,
+    authenticate,
+    isAuthorized({hasRole: ["freeuser", "premiumUser"]}),
     validateRequest(itemSchemas.getGameById),
     gameController.getGameById);
 

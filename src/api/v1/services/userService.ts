@@ -5,16 +5,12 @@ export const getAllUsers = (): Promise<userModel[]> => {
   return usersRepository.getAllUsers();
 };
 
-export const getUserById = (id: string) => {
+export const getUserById = async (id: string): Promise<userModel> => {
   return usersRepository.getUserById(id);
 };
 
-export const getUserByUid = (uid: string) => {
-  return usersRepository.getUserByUid(uid);
-};
-
-export const createUsers = (data: userModel) => {
-  return usersRepository.createUsers(data);
+export const createUsers = (user_id: string, data: userModel) => {
+  return usersRepository.createUsers(user_id, data);
 };
 
 export const updateUser = (id: string, data: Partial<userModel>): Promise<userModel> => {

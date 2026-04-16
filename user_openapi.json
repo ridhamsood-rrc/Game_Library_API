@@ -278,8 +278,8 @@
           "username",
           "password",
           "DOB",
-          "platform",
-          "subscription"
+          "subscription",
+          "platform"
         ],
         "properties": {
           "userId": {
@@ -323,8 +323,8 @@
               "free",
               "premium"
             ],
-            "description": "Gives the status of the user's subscription plan",
-            "example": "premium"
+            "description": "The subscription plan of the user",
+            "example": "free"
           },
           "createdAt": {
             "type": "string",
@@ -377,8 +377,8 @@
               "free",
               "premium"
             ],
-            "description": "Gives the status of the user's subscription plan",
-            "example": "premium"
+            "description": "The subscription plan of the user",
+            "example": "free"
           },
           "createdAt": {
             "type": "string",
@@ -433,8 +433,8 @@
               "free",
               "premium"
             ],
-            "description": "Gives the status of the user's subscription plan",
-            "example": "premium"
+            "description": "The subscription plan of the user",
+            "example": "free"
           },
           "createdAt": {
             "type": "string",

@@ -2,7 +2,6 @@ import { Router } from "express";
 import {
   getAllWatchlist,
   getWatchlistById,
-  getUserWatchlist,
   createWatchlist,
   updateWatchlist,
   deleteWatchlist,
@@ -12,7 +11,6 @@ import {
   createWatchlistSchema,
   updateWatchlistSchema,
 } from "../validate/watchlist.validation";
-import { identifyUser, subscriptionMiddleware } from "../middleware/subscriptionMiddleware";
 import authenticate from "../middleware/authenticate";
 import isAuthorized from "../middleware/authorize";
 
@@ -171,35 +169,27 @@ const router = Router();
  */
 
 router.get("/",
-    authenticate,
-    isAuthorized({hasRole: ["admin"]}),
-    getAllWatchlist);
+  authenticate,
+  isAuthorized({hasRole: ["manager"]}),
+  getAllWatchlist);
 
-router.get("/user/:userId",
-    identifyUser,
-    subscriptionMiddleware,
-    getUserWatchlist);
-
-router.get("/:watchlistId",
-    identifyUser,
-    subscriptionMiddleware,
-    getWatchlistById);
+router.get("/:watchlistId", getWatchlistById);
 
 router.post("/",
-    identifyUser,
-    subscriptionMiddleware,
-    validateRequest(createWatchlistSchema),
-    createWatchlist);
+  authenticate,
+  isAuthorized({hasRole: ["freeuser", "premiumUser"]}),
+  validateRequest(createWatchlistSchema),
+  createWatchlist);
 
 router.put("/:watchlistId",
-    identifyUser,
-    subscriptionMiddleware,
-    validateRequest(updateWatchlistSchema),
-    updateWatchlist);
+  authenticate,
+  isAuthorized({hasRole: ["manager", "freeuser", "premiumUser"]}),
+  validateRequest(updateWatchlistSchema),
+  updateWatchlist);
 
 router.delete("/:watchlistId",
-    authenticate,
-    isAuthorized({hasRole: ["admin"]}),
-    deleteWatchlist);
+  authenticate,
+  isAuthorized({hasRole: ["manager", "freeuser", "premiumUser"]}),
+  deleteWatchlist);
 
 export default router;
