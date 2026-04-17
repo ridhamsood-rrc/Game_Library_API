@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 import * as userService from "../services/userService";
-import bcrypt from "bcrypt";
 
 export const getAllUsers = async (
   _req: Request,
@@ -44,8 +43,6 @@ export const getUsersById = async (
   }
 };
 
-const saltRounds = 10
-
 export const createUsers = async (
   req: Request,
   res: Response,
@@ -53,14 +50,9 @@ export const createUsers = async (
 ) => {
   try {
 
-    const { password, ...rest } = req.body;
+    const user_id = res.locals.uid
 
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    const users = await userService.createUsers({
-        ...rest,
-        password: hashedPassword
-    });
+    const users = await userService.createUsers(user_id, req.body)
 
     res.status(HTTP_STATUS.CREATED).json({
       message: "User created successfully",
@@ -78,14 +70,7 @@ export const updateUser = async (
 ): Promise<void> => {
   try {
 
-    const { password, ...rest } = req.body;
-
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    const user = await userService.updateUser(req.params.id as string, {
-        ...rest,
-        password: hashedPassword
-    });
+    const user = await userService.updateUser(req.params.id as string, req.body)
 
     if (!user) {
        res.status(HTTP_STATUS.NOT_FOUND).json({

@@ -7,9 +7,9 @@ jest.mock('../src/api/v1/repository/userFirestoreRepository');
 
 const mockUser: userModel = {
     username: "Prachi",
-    password: "Prachi13",
     DOB: "2012-02-13",
     platform: ["PC"],
+    subscription: "free",
     createdAt: "20226-02-02"
 }
 
@@ -28,10 +28,11 @@ describe('serviceMethod', () => {
 
     it("should create user successfully", async() => {
         // Arrange
+        const uid = "user_0001";
         (repositoryModule.createUsers as jest.Mock).mockResolvedValue(mockUser);
 
         // Act
-        const result = await userService.createUsers(mockUser);
+        const result = await userService.createUsers(uid, mockUser);
 
         // Assert
         expect(repositoryModule.createUsers).toHaveBeenCalledTimes(1);
