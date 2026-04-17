@@ -12,8 +12,8 @@ import Joi from "joi";
  *       type: object
  *       required:
  *         - username
- *         - password
  *         - DOB
+ *         - subscription
  *         - platform
  *       properties:
  *         userId:
@@ -25,10 +25,6 @@ import Joi from "joi";
  *           minLength: 3
  *           description: Full name of the user
  *           example: "Prachi"
- *         password:
- *           type: string
- *           description: User's password to login
- *           example: "Prachi13"
  *         DOB:
  *           type: string
  *           description: Date of Birth of the User
@@ -38,6 +34,11 @@ import Joi from "joi";
  *           enum: [PC, Mobile, PlayStation, X-Box]
  *           description: Platform user likes to play games
  *           example: ["PC", "Mobile"]
+ *         subscription:
+ *           type: string
+ *           enum: [free, premium]
+ *           description: The subscription plan of the user
+ *           example: "free"
  *         createdAt:
  *           type: string
  *           description: When the user was created
@@ -54,10 +55,6 @@ import Joi from "joi";
  *           minLength: 3
  *           description: Full name of the user
  *           example: "Prachi"
- *         password:
- *           type: string
- *           description: User's password to login
- *           example: "Prachi13"
  *         DOB:
  *           type: string
  *           description: Date of Birth of the User
@@ -67,6 +64,11 @@ import Joi from "joi";
  *           enum: [PC, Mobile, PlayStation, X-Box]
  *           description: Platform user likes to play games
  *           example: ["PC", "Mobile"]
+ *         subscription:
+ *           type: string
+ *           enum: [free, premium]
+ *           description: The subscription plan of the user
+ *           example: "free"
  *         createdAt:
  *           type: string
  *           description: When the user was created
@@ -85,10 +87,6 @@ import Joi from "joi";
  *           minLength: 3
  *           description: Full name of the user
  *           example: "Prachi"
- *         password:
- *           type: string
- *           description: User's password to login
- *           example: "Prachi13"
  *         DOB:
  *           type: string
  *           description: Date of Birth of the User
@@ -98,6 +96,11 @@ import Joi from "joi";
  *           enum: [PC, Mobile, PlayStation, X-Box]
  *           description: Platform user likes to play games
  *           example: ["PC", "Mobile"]
+ *         subscription:
+ *           type: string
+ *           enum: [free, premium]
+ *           description: The subscription plan of the user
+ *           example: "free"
  *         createdAt:
  *           type: string
  *           format: date
@@ -140,6 +143,11 @@ export const createUserSchema = Joi.object({
         "date.base": '"date" must be valid',
         "date.greater": '"date" must be lower than "now"'
     }),
+    subscription: Joi.string().required().valid("free", "premium").messages({
+        "string.empty": '"subscription" cannot be empty.',
+        "any.required": '"subscription" is required.',
+        "any.only": '"subscription" must be one of [free, premium]'
+    }),
     platform: Joi.array().required().items(Joi.string().valid("PC", "PlayStation", "Mobile", "X-Box")).messages({
         "string.empty": '"platform" cannot be empty.',
         "any.required": '"platform" is required.',
@@ -165,6 +173,11 @@ export const updateUserSchema = {
         DOB: Joi.date().less("now").messages({
             "date.base": '"date" must be valid',
             "date.greater": '"date" must be lower than "now"'
+        }),
+        subscription: Joi.string().valid("free", "premium").messages({
+            "string.empty": '"subscription" cannot be empty.',
+            "any.required": '"subscription" is required.',
+            "any.only": '"subscription" must be one of [free, premium]'
         }),
         platform: Joi.array().items(Joi.string().valid("PC", "PlayStation", "Mobile", "X-Box")).messages({
             "string.empty": '"platform" cannot be empty.',

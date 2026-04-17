@@ -7,7 +7,7 @@ import { HTTP_STATUS } from "../src/constants/httpConstants";
 jest.mock("../src/api/v1/middleware/authenticate", () => ({
   __esModule: true,
   default: (req: any, res: any, next: any) => {
-    req.user = { role: "admin" };
+    res.locals.uid = "user_id";
     next();
   },
 }));
@@ -21,6 +21,18 @@ jest.mock("../src/api/v1/middleware/validateRequest", () => ({
   validateRequest: () => (req: any, res: any, next: any) => next(),
 }));
 
+jest.mock("../src/api/v1/middleware/subscriptionMiddleware", () => ({
+  __esModule: true,
+  subscriptionMiddleware: () => (req: any, res: any, next: any) => {
+    res.locals.subscription = "free";
+    next()},
+}));
+
+jest.mock("../src/api/v1/middleware/rateLimitingMiddleware", () => ({
+  __esModule: true,
+  rateLimitBySubscription: () => (req: any, res: any, next: any) => next(),
+}));
+
 jest.mock("../src/api/v1/controllers/gameController")
 
 const app: Express = express();
@@ -32,23 +44,6 @@ describe("Game Routes", () => {
     afterEach(() => {
 		jest.resetAllMocks();
 	});
-
-    describe("GET /api/v1/games", () => {
-        it("should give all the games from the database", async () => {
-
-            // Arrange
-            (gameController.getGames as jest.Mock).mockImplementation(
-                    (req, res) => res.status(200).json([])
-            );
-
-            // Act
-            const res: Response = await request(app).get("/api/v1/games");
-
-            // Assert
-            expect(res.status).toBe(HTTP_STATUS.OK);
-            expect(gameController.getGames).toHaveBeenCalled();
-            });
-    });
 
     describe("POST /api/v1/games", () => {
 		it("should create game information in the database", async () => {

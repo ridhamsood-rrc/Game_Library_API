@@ -13,6 +13,8 @@ import {
 } from "../validate/watchlist.validation";
 import authenticate from "../middleware/authenticate";
 import isAuthorized from "../middleware/authorize";
+import { subscriptionMiddleware } from "../middleware/subscriptionMiddleware";
+import { rateLimitBySubscription } from "../middleware/rateLimitingMiddleware";
 
 const router = Router();
 
@@ -90,26 +92,6 @@ const router = Router();
 
 /**
  * @openapi
- * /api/v1/watchlist/user/{userId}:
- *   get:
- *     summary: Get watchlist by user ID
- *     tags: [Watchlist]
- *     parameters:
- *       - in: path
- *         name: userId
- *         required: true
- *         schema:
- *           type: string
- *         description: ID of the user
- *     responses:
- *       200:
- *         description: Successfully retrieved user watchlist
- *       404:
- *         description: No watchlist found
- */
-
-/**
- * @openapi
  * /api/v1/watchlist/{watchlistId}:
  *   get:
  *     summary: Get watchlist item by ID
@@ -173,23 +155,33 @@ router.get("/",
   isAuthorized({hasRole: ["manager"]}),
   getAllWatchlist);
 
-router.get("/:watchlistId", getWatchlistById);
+router.get("/:watchlistId",
+  authenticate,
+  subscriptionMiddleware,
+  rateLimitBySubscription(),
+  getWatchlistById);
 
 router.post("/",
   authenticate,
-  isAuthorized({hasRole: ["user"]}),
+  isAuthorized({hasRole: ["freeUser", "premiumUser"]}),
+  subscriptionMiddleware,
+  rateLimitBySubscription(),
   validateRequest(createWatchlistSchema),
   createWatchlist);
 
 router.put("/:watchlistId",
   authenticate,
-  isAuthorized({hasRole: ["manager", "user"]}),
+  isAuthorized({hasRole: ["manager", "freeUser", "premiumUser"]}),
+  subscriptionMiddleware,
+  rateLimitBySubscription(),
   validateRequest(updateWatchlistSchema),
   updateWatchlist);
 
 router.delete("/:watchlistId",
   authenticate,
-  isAuthorized({hasRole: ["manager", "user"]}),
+  isAuthorized({hasRole: ["manager", "freeUser", "premiumUser"]}),
+  subscriptionMiddleware,
+  rateLimitBySubscription(),
   deleteWatchlist);
 
 export default router;

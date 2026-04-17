@@ -6,41 +6,41 @@ const collection = db.collection("users");
 export const getAllUsers = async (): Promise<userModel[]> => {
   const snapshot = await collection.get();
   return snapshot.docs.map((doc) => ({
-    id: doc.id,
     ...(doc.data() as userModel),
   }));
 };
 
-export const getUserById = async (userId: string): Promise<userModel | null> => {
-  const doc = await collection.doc(userId).get();
-  if (!doc.exists) return null;
-  return { userId: doc.id, ...(doc.data() as userModel) };
+export const getUserById = async (uid: string): Promise<userModel> => {
+  const doc = await collection.doc(uid).get();
+  const data = doc.data()!;
+
+  return { 
+    userId: data.userId,
+    username: data.username,
+    DOB: data.DOB.toDate().toISOString().split("T")[0],
+    subscription: data.subscription,
+    platform: data.platform,
+    createdAt: data.createdAt
+  };
 };
 
-export const createUsers = async (users: userModel): Promise<userModel> => {
-  const counterRef = db.collection("counters").doc("users");
-  const newUser = await db.runTransaction(async (transaction) => {
-    const counterDoc = await transaction.get(counterRef);
-    let newCount = 1;
-    if (!counterDoc.exists) {
-      transaction.set(counterRef, { currentId: 1 });
-    } else {
-      newCount = counterDoc.data()!.currentId + 1;
-      transaction.update(counterRef, { currentId: newCount });
-    }
-    const userId = `user${String(newCount).padStart(5, "0")}`;
-    const userRef = collection.doc(userId);
-    transaction.set(userRef, {
-      ...users,
-      userId,
-      DOB: new Date(users.DOB).toISOString().split("T")[0],
-      createdAt: new Date().toISOString().split("T")[0],
-    });
-    return {
-      ...users,
-      userId,
-    };
-  });
+export const createUsers = async (
+  user_id: string,
+  users: userModel
+): Promise<userModel> => {
+
+  const userId = user_id;
+  const userRef = collection.doc(userId);
+
+  const newUser = {
+    userId,
+    ...users,
+    DOB: users.DOB,
+    createdAt: new Date().toISOString().split("T")[0],
+  };
+
+  await userRef.set(newUser);
+
   return newUser;
 };
 
