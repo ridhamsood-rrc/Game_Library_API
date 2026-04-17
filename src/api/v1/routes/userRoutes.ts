@@ -119,6 +119,7 @@ router.get("/:id",
  *               $ref: '#/components/schemas/Error'
  */
 router.post("/",
+    authenticate,
     validateRequest({ body: createUserSchema}),
     userController.createUsers);
 

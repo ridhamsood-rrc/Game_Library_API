@@ -243,9 +243,18 @@ export const itemSchemas = {
             platform: Joi.string().valid("PC", "PlayStation", "X-Box", "Mobile").messages({
                 "any.only": '"platform" must be one of [PC, PlayStation, X-Box, Mobile]'
             }),
+            size: Joi.string().messages({
+                "any.required": '"size" is required',
+                "string.empty": '"size" cannot be empty.'
+            }),
             modes: Joi.string().default("single-player").valid("single-player", "multi-player", "hybrid").messages({
                 "any.only": '"modes" must be one of [single-player, multi-player, hybrid]'
-            })
+            }),
+            developedBy: Joi.string().messages({
+                "any.required": '"developedBy" is required',
+                "string.empty": '"developedBy" cannot be empty',
+            }),
+            rating: Joi.number()
         }).min(1)
     },
 
