@@ -60,7 +60,7 @@ const router: Router = express.Router();
 router.get("/",
     authenticate,
     subscriptionMiddleware,
-    rateLimitBySubscription(),
+    rateLimitBySubscription(1),
     gameController.getGames);
 
 /**
@@ -99,7 +99,7 @@ router.get("/:id",
     authenticate,
     isAuthorized({hasRole: ["freeUser", "premiumUser"]}),
     subscriptionMiddleware,
-    rateLimitBySubscription(),
+    rateLimitBySubscription(0.5),
     validateRequest(itemSchemas.getGameById),
     gameController.getGameById);
 

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 import * as userService from "../services/userService";
+import { rateLimitMessage } from "../middleware/rateLimitMessage";
 
 export const getAllUsers = async (
   _req: Request,
@@ -34,8 +35,11 @@ export const getUsersById = async (
       });
     }
 
+    const LimitMessage = await rateLimitMessage(req, res, next)
+
     res.status(HTTP_STATUS.OK).json({
       message: "User retrieved successfully",
+      LimitMessage,
       data: user,
     });
   } catch (error) {
@@ -77,9 +81,11 @@ export const updateUser = async (
         message: "User not found",
       });
     }
+    const LimitMessage = await rateLimitMessage(req, res, next)
 
     res.status(HTTP_STATUS.OK).json({
       message: "User information updated successfully",
+      LimitMessage,
       data: user,
     });
   } catch (error) {

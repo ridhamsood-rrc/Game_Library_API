@@ -3,6 +3,7 @@ import * as gameService from "../services/gameService";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 import { gameModel } from "../models/gameModel";
 import { errorResponse } from "../models/responseModel";
+import { rateLimitMessage } from "../middleware/rateLimitMessage";
 
 // Controller to handle get all game request
 export const getGames = async (
@@ -12,8 +13,11 @@ export const getGames = async (
 ): Promise<void> => {
     try {
         const game: gameModel[] = await gameService.getGames();
+        const LimitMessage = await rateLimitMessage(req, res, next)
+
         res.status(HTTP_STATUS.OK).json({
             message: "Games retrieved",
+            LimitMessage,
             count: game.length,
             data: game
         });
@@ -41,9 +45,11 @@ export const getGameById = async (
             ));
             return;
         };
+        const LimitMessage = await rateLimitMessage(req, res, next)
 
         res.status(HTTP_STATUS.OK).json({
             message: "Game information retrieved successfully",
+            LimitMessage,
             data: game,
         });
     } catch (error) {

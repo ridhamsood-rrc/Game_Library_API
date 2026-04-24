@@ -88,7 +88,7 @@ router.get("/:id",
     authenticate,
     isAuthorized({hasRole: ["manager", "freeUser", "premiumUser"]}),
     subscriptionMiddleware,
-    rateLimitBySubscription(),
+    rateLimitBySubscription(0.5),
     userController.getUsersById);
 
 // Create User
@@ -171,7 +171,7 @@ router.put("/:id",
     authenticate,
     isAuthorized({hasRole: ["manager", "freeUser", "premiumUser"]}),
     subscriptionMiddleware,
-    rateLimitBySubscription(),
+    rateLimitBySubscription(0.2),
     validateRequest(updateUserSchema),
     userController.updateUser);
 
@@ -217,7 +217,7 @@ router.delete("/:id",
     authenticate,
     isAuthorized({hasRole: ["manager", "freeUser", "premiumUser"]}),
     subscriptionMiddleware,
-    rateLimitBySubscription(),
+    rateLimitBySubscription(0.2),
     userController.deleteUser);
 
 export default router

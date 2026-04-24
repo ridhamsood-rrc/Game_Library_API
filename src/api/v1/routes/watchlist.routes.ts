@@ -158,14 +158,14 @@ router.get("/",
 router.get("/:watchlistId",
   authenticate,
   subscriptionMiddleware,
-  rateLimitBySubscription(),
+  rateLimitBySubscription(0.5),
   getWatchlistById);
 
 router.post("/",
   authenticate,
   isAuthorized({hasRole: ["freeUser", "premiumUser"]}),
   subscriptionMiddleware,
-  rateLimitBySubscription(),
+  rateLimitBySubscription(0.2),
   validateRequest(createWatchlistSchema),
   createWatchlist);
 
@@ -173,7 +173,7 @@ router.put("/:watchlistId",
   authenticate,
   isAuthorized({hasRole: ["manager", "freeUser", "premiumUser"]}),
   subscriptionMiddleware,
-  rateLimitBySubscription(),
+  rateLimitBySubscription(0.2),
   validateRequest(updateWatchlistSchema),
   updateWatchlist);
 
@@ -181,7 +181,7 @@ router.delete("/:watchlistId",
   authenticate,
   isAuthorized({hasRole: ["manager", "freeUser", "premiumUser"]}),
   subscriptionMiddleware,
-  rateLimitBySubscription(),
+  rateLimitBySubscription(0.2),
   deleteWatchlist);
 
 export default router;

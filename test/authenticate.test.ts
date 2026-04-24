@@ -29,7 +29,7 @@ describe("authenticate middleware", () => {
 
         (auth.verifyIdToken as jest.Mock).mockResolvedValue({
             uid: "user123",
-            role: "admin"
+            role: "freeUser"
         });
 
         // Act
@@ -38,7 +38,7 @@ describe("authenticate middleware", () => {
         // Assert
         expect(auth.verifyIdToken).toHaveBeenCalledWith("validToken");
         expect(res.locals.uid).toBe("user123");
-        expect(res.locals.role).toBe("admin");
+        expect(res.locals.role).toBe("freeUser");
         expect(next).toHaveBeenCalledWith();
     });
 
@@ -61,7 +61,7 @@ describe("authenticate middleware", () => {
         expect(next).toHaveBeenCalledWith(expect.any(AuthenticationError));
     });
 
-    it("should throw error if token is invalid", async () => {
+    it("should handle invalid token using res.status and json", async () => {
         // Arrange
         const req = {
             headers: {
@@ -70,7 +70,9 @@ describe("authenticate middleware", () => {
         } as any;
 
         const res = {
-            locals: {}
+            locals: {},
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn()
         } as any;
 
         const next = jest.fn();
@@ -83,6 +85,7 @@ describe("authenticate middleware", () => {
         await authenticate(req, res, next);
 
         // Assert
-        expect(next).toHaveBeenCalledWith(expect.any(AuthenticationError));
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalled();
     });
 });
