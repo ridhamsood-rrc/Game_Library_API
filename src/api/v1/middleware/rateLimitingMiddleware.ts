@@ -1,14 +1,14 @@
 import rateLimit from "express-rate-limit";
  
-type Subscription = "free" | "premium"
+export type Subscription = "free" | "premium"
  
-const RATE_LIMITS = {
+export const RATE_LIMITS = {
     free: 5,
     premium: 100
 }
  
 export const rateLimitBySubscription = () => rateLimit({
-    windowMs: 60 * 1000,
+    windowMs: 60 * 1000 * 2,
     max: (req, res) => {
         const subscription = res.locals.subscription as Subscription
 
