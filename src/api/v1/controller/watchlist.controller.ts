@@ -1,13 +1,16 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { watchlistService } from "../services/watchlist.service";
+import { rateLimitMessage } from "../middleware/rateLimitMessage";
 
 // Get all watchlist items
 export const getAllWatchlist = async (
-  _req: Request,
-  res: Response
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   try {
     const items = await watchlistService.getAllWatchlist();
+
     res.status(200).json(items);
   } catch (error) {
     res.status(500).json({
@@ -20,12 +23,18 @@ export const getAllWatchlist = async (
 // Get one watchlist item by ID
 export const getWatchlistById = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   try {
     const watchlistId = req.params.watchlistId as string;
     const item = await watchlistService.getWatchlistById(watchlistId);
-    res.status(200).json(item);
+    const LimitMessage = await rateLimitMessage(req, res, next)
+
+    res.status(200).json({
+      data: item,
+      LimitMessage
+    });
   } catch (error) {
     res.status(404).json({
       message: "Watchlist item not found",
@@ -54,11 +63,17 @@ export const getUserWatchlist = async (
 // Create new watchlist item
 export const createWatchlist = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   try {
     const newItem = await watchlistService.createWatchlist(req.body);
-    res.status(201).json(newItem);
+    const LimitMessage = await rateLimitMessage(req, res, next)
+
+    res.status(201).json({
+      data: newItem,
+      LimitMessage
+    });
   } catch (error) {
     res.status(400).json({
       message: "Failed to create watchlist item",
@@ -70,7 +85,8 @@ export const createWatchlist = async (
 // Update watchlist item
 export const updateWatchlist = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   try {
     const watchlistId = req.params.watchlistId as string;
@@ -78,7 +94,12 @@ export const updateWatchlist = async (
       watchlistId,
       req.body
     );
-    res.status(200).json(updatedItem);
+    const LimitMessage = await rateLimitMessage(req, res, next)
+
+    res.status(200).json({
+      data: updatedItem,
+      LimitMessage
+    });
   } catch (error) {
     res.status(400).json({
       message: "Failed to update watchlist item",
@@ -90,13 +111,17 @@ export const updateWatchlist = async (
 // Delete watchlist item
 export const deleteWatchlist = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   try {
     const watchlistId = req.params.watchlistId as string;
     await watchlistService.deleteWatchlist(watchlistId);
+    const LimitMessage = await rateLimitMessage(req, res, next)
+
     res.status(200).json({
       message: "Watchlist item deleted successfully",
+      LimitMessage
     });
   } catch (error) {
     res.status(404).json({

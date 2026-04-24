@@ -5,6 +5,8 @@ import { AuthenticationError } from "../errors/errors";
 
 // Internal module imports
 import { auth } from "../../../../config/firebaseConfig";
+import { HTTP_STATUS } from "../../../constants/httpConstants";
+import { errorResponse } from "../models/responseModel";
 
 /**
  * Middleware to authenticate a user using a Firebase ID token.
@@ -51,10 +53,10 @@ const authenticate = async (
             next(error);
         } else {
             next(
-                new AuthenticationError(
-                    "Unauthorized: Invalid token",
-                    "TOKEN_INVALID"
-                )
+                res.status(HTTP_STATUS.BAD_REQUEST).json(errorResponse(
+                    "Invalid user",
+                    "USER_NOT_FOUND"
+                ))
             );
         }
     }
