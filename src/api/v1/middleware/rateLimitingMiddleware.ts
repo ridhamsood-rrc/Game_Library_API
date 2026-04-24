@@ -7,18 +7,23 @@ export const RATE_LIMITS = {
     premium: 100
 }
  
-export const rateLimitBySubscription = () => rateLimit({
+export const rateLimitBySubscription = (multiplier: number) => rateLimit({
     windowMs: 60 * 1000 * 2,
     max: (req, res) => {
         const subscription = res.locals.subscription as Subscription
+        const currentLimit = RATE_LIMITS[subscription]
 
-        return RATE_LIMITS[subscription]
+        if (subscription === "free") {
+            return Math.max(1, Math.floor(currentLimit * multiplier))
+        }
+
+        return currentLimit
     },
     keyGenerator: (req, res) => {
-      return `ip-${res.locals.uid}`
+      return `user-${res.locals.uid}`
     },
     message: {
         error: "Rate Limit reached",
-        upgrade: "Upgrade to premium to get access to all the games in the library."
+        upgrade: "Upgrade to premium to get access to all the endpoints in the library."
     }
 })
